@@ -101,9 +101,10 @@ const createOrder = async (req, res) => {
 			discountAmount,
 			finalAmount,
 			paymentMethod,
+            createdAt: new Date(),
             status: 'pending',
             paymentStatus: 'pending',
-            createdAt: new Date(),
+			paymentIntent: null, // save payment info from Stripe
 		});
 
 		// Update the status of the accounts

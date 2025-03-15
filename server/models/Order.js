@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const stripe = require('../config/stripe');
 
 const orderSchema = mongoose.Schema(
     {
@@ -66,6 +67,31 @@ const orderSchema = mongoose.Schema(
             type: String,
             enum: ['pending', 'completed'],
             default: 'pending',
+        },
+
+        paymentIntent: {
+            type: String,
+            default: null,
+        },
+
+        stripeSessionId: {
+            type: String,
+            default: null,
+        },
+
+        paymentResult: {
+            id: {
+                type: String,
+            },
+            status: {
+                type: String,
+            },
+            update_time: {
+                type: String,
+            },
+            email_address: {
+                type: String,
+            },
         },
     },
         {
