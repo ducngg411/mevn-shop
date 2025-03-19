@@ -75,8 +75,8 @@ const createCheckoutSession = async (req, res) => {
 			payment_method_types: ['card'],
 			line_items: lineItems,
 			mode: 'payment',
-			success_url: `${process.env.WEBHOOK_URL}/api/payments/success?orderId=${order._id}`,
-			cancel_url: `${process.env.WEBHOOK_URL}/api/payments/cancel?orderId=${order._id}`,
+			success_url: `${req.protocol}://${req.get('host')}/api/payments/redirect?orderId=${order._id}&status=success`,
+  			cancel_url: `${req.protocol}://${req.get('host')}/api/payments/redirect?orderId=${order._id}&status=cancel`,
 			metadata: {
 				orderId: order._id.toString(),
 			},
@@ -257,10 +257,78 @@ const getConfig = async (req, res) => {
 	});
 };
 
+// Redirect 
+
+const redirectAfterPayment = async (req, res) => {
+	const { orderId, status } = req.query;
+
+	const frontendURL = process.env.FRONTEND_URL || 'http://localhost:8080';
+
+	let redirectURL;
+
+	if (status === 'success') {
+		redirectURL = `${frontendURL}/payment/success?orderId=${orderId}&payment=success`;
+
+		try {
+			const order = await Order.findById(orderId);
+			if (order) {
+				order.status = 'completed';
+				order.paymentStatus = 'completed';
+				await order.save();
+			}
+		} catch (error) {
+			console.error('Error updating order status:', error);
+		}
+	} else {
+		redirectURL = `${frontendURL}/payment/cancel?orderId=${orderId}`;
+	}
+
+	const html = `
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Redirecting...</title>
+		<meta http-equiv="refresh" content="0;url=${redirectURL}">
+		<style>
+		body {
+			font-family: Arial, sans-serif;
+			text-align: center;
+			padding-top: 50px;
+		}
+		.loader {
+			border: 5px solid #f3f3f3;
+			border-top: 5px solid #3498db;
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+			animation: spin 1s linear infinite;
+			margin: 20px auto;
+		}
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+		</style>
+	</head>
+	<body>
+		<h2>Đang chuyển hướng về trang chủ...</h2>
+		<div class="loader"></div>
+		<p>Nếu bạn không được chuyển hướng tự động, <a href="${redirectURL}">nhấn vào đây</a>.</p>
+		<script>
+		window.location.href = "${redirectURL}";
+		</script>
+	</body>
+	</html>`;
+
+	res.send(html);
+};
+
+
 module.exports = {
 	createCheckoutSession,
 	handleWebhook,
 	confirmPayment,
 	cancelPayment,
 	getConfig,
+	redirectAfterPayment,
 };

@@ -6,6 +6,7 @@ const {
 	confirmPayment,
 	cancelPayment,
 	getConfig,
+	redirectAfterPayment,
 } = require('../controllers/paymentController');
 
 const { protect } = require('../middleware/authMiddleware');
@@ -32,6 +33,8 @@ router.get('/cancel', (req, res) => {
 	res.redirect(`${process.env.FRONTEND_URL}/payment/cancel?orderId=${orderId}`);
 });
 
+// Router redirect after payment success
+router.get('/redirect', redirectAfterPayment);
 
 // Confirm payment success
 router.post('/confirm/:orderId', protect, confirmPayment);
