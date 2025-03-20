@@ -1,8 +1,13 @@
 <template>
 	<div class="card h-100 product-card">
 		<router-link :to="`/products/${product._id}`">
-			<img :src="product.image || 'https://picsum.photos/300/200'" class="card-img-top" :alt="product.title">
+			<img :src="formatImageUrl(product.image)" class="card-img-top" :alt="product.title">
 		</router-link>
+		
+		<!-- Rating badge -->
+		<div class="product-rating-badge" v-if="product.rating">
+			<span>{{ product.rating.toFixed(1) }} <i class="star icon"></i></span>
+		</div>
 		
 		<div class="card-body d-flex flex-column">
 			<router-link :to="`/products/${product._id}`" class="text-decoration-none">
@@ -16,25 +21,30 @@
 				<span class="current-price">{{ formatCurrency(product.discountPrice > 0 ? product.discountPrice : product.price) }}</span>
 			</div>
 			
-			<div class="product-stock text-muted small mb-2">
+			<div class="product-stock text-muted small mb-2 d-flex justify-content-between">
 				<span v-if="product.availableStock > 0">
-					<i class="check circle icon text-success"></i> Còn {{ product.availableStock }} tài khoản
+					<i class="check circle icon text-success"></i>  {{ product.availableStock }} in stock
 				</span>
 				<span v-else class="text-danger">
-					<i class="times circle icon"></i> Hết hàng
+					<i class="times circle icon"></i> Out of stock
+				</span>
+				
+				<!-- Sold count -->
+				<span v-if="product.soldCount" class="product-sold">
+					{{ product.soldCount }} sold
 				</span>
 			</div>
 			
 			<div class="d-flex justify-content-between">
 				<router-link :to="`/products/${product._id}`" class="btn btn-outline-primary btn-sm">
-					<i class="info circle icon"></i> Chi tiết
+					<i class="info circle icon"></i> Details
 				</router-link>
 				<button 
 					class="btn btn-primary btn-sm" 
 					@click="addToCart"
 					:disabled="product.availableStock <= 0"
 				>
-					<i class="shopping cart icon"></i> Thêm vào giỏ
+					<i class="shopping cart icon"></i> Add to cart
 				</button>
 			</div>
 		</div>
@@ -43,7 +53,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { formatCurrency, truncateText } from '@/utils/helpers';
+import { formatCurrency, truncateText, formatImageUrl } from '@/utils/helpers';
 
 export default {
 	name: 'ProductCard',
@@ -61,6 +71,7 @@ export default {
 		// Formatting the currency and truncating text
 		formatCurrency,
 		truncateText,
+		formatImageUrl,
 		// Method to add product to the cart
 		addToCart() {
 			if (this.product.availableStock <= 0) {
@@ -133,5 +144,29 @@ a:hover .card-title {
 .btn-primary:hover {
 	background-color: #2980b9;
 	border-color: #2980b9;
+}
+
+.product-rating-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffd700;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+.product-rating-badge .icon {
+  margin-left: 2px;
+  font-size: 0.8rem;
+}
+
+.product-sold {
+  color: #777;
+  font-size: 0.85rem;
 }
 </style>

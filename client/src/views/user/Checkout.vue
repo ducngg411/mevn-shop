@@ -130,11 +130,11 @@
                                         checked
                                     >
                                     <label class="form-check-label" for="creditCard">
-                                        <i class="credit card icon"></i> Credit/Debit Card
+                                        <img class="credit_card_modify" src="/img/Mastercard-va-visa+(1).jpg.png" alt=""> Credit/Debit Card
                                     </label>
                                 </div>
                                 
-                                <div class="form-check mb-3">
+                                <!-- <div class="form-check mb-3">
                                     <input 
                                         class="form-check-input" 
                                         type="radio" 
@@ -146,7 +146,7 @@
                                     <label class="form-check-label" for="bankTransfer">
                                         <i class="university icon"></i> Bank Transfer
                                     </label>
-                                </div>
+                                </div> -->
                             </div>
                             
                             <div class="mt-4">
@@ -156,7 +156,9 @@
                                         Processing...
                                     </span>
                                     <span v-else>
-                                        <i class="credit card icon"></i> Place Order
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-credit-card-fill" viewBox="0 0 16 16">
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm0 3v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7zm3 2h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1"/>
+</svg> Place Order
                                     </span>
                                 </button>
                             </div>
@@ -362,5 +364,17 @@ export default {
 .payment-methods .form-check-label i {
     margin-right: 10px;
     color: #3498db;
+}
+
+.bi-credit-card-fill {
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+
+.credit_card_modify {
+    width: 45px;
+    height: 25px;
+    border-radius: 4px;
+    margin-right: 4px;
 }
 </style>

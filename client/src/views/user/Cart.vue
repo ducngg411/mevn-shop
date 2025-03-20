@@ -22,7 +22,8 @@
                             <div v-for="(item, index) in cartItems" :key="index" class="cart-item mb-3 pb-3 border-bottom">
                                 <div class="row align-items-center">
                                     <div class="col-md-2 mb-2 mb-md-0">
-                                        <img :src="item.image || 'https://picsum.photos/100/100'" :alt="item.title" class="img-fluid">
+                                        <!-- <img :src="item.image || 'https://picsum.photos/100/100'" :alt="item.title" class="img-fluid"> -->
+                                        <img :src="formatImageUrl(item.image)" class="img-fluid" :alt="item.title">
                                     </div>
                                     <div class="col-md-4 mb-2 mb-md-0">
                                         <h5 class="mb-1">{{ item.title }}</h5>
@@ -123,7 +124,12 @@
                                 @click="proceedToCheckout"
                                 :disabled="cartItems.length === 0"
                             >
-                                <i class="credit card icon"></i> Proceed to Checkout
+                                <!-- <i class="credit card icon"></i>  -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card icon" viewBox="0 0 16 16">
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+  <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+</svg>
+                                Proceed to Checkout
                             </button>
                         </div>
                     </div>
@@ -152,7 +158,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { formatCurrency } from '@/utils/helpers';
+import { formatCurrency, formatImageUrl } from '@/utils/helpers';
 import api from '@/utils/api';
 
 export default {
@@ -183,6 +189,7 @@ export default {
             clearCartAction: 'cart/clearCart'
         }),
         formatCurrency,
+        formatImageUrl,
         increaseQuantity(index) {
             const item = this.cartItems[index];
             this.updateCartItemQuantity({
@@ -334,6 +341,11 @@ export default {
     width: 400px;
     max-width: 90%;
     z-index: 1;
+}
+
+.bi-credit-card {
+    margin-right: 5px;
+    margin-bottom: 2px;
 }
 
 @media (max-width: 767px) {

@@ -39,15 +39,16 @@
                                     >
                                         {{ getOrderStatusText(order.status) }}
                                     </span>
-                                    <span 
+                                    <!-- <span 
                                         class="badge" 
                                         :class="{
                                             'badge-success': order.paymentStatus === 'completed',
-                                            'badge-warning': order.paymentStatus === 'pending'
+                                            'badge-warning': order.paymentStatus === 'pending',
+                                            'badge-danger': order.paymentStatus === 'cancelled'
                                         }"
                                     >
                                         {{ getPaymentStatusText(order.paymentStatus) }}
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                             
@@ -60,7 +61,7 @@
                                 </div>
                                 
                                 <div class="col-md-6">
-                                    <h5>Shipping Information</h5>
+                                    <h5>Buyer Information</h5>
                                     <p><strong>Recipient Name:</strong> {{ order.user.fullName }}</p>
                                     <p><strong>Email:</strong> {{ order.user.email }}</p>
                                 </div>
@@ -84,9 +85,9 @@
                                             <td>
                                                 <div class="d-flex">
                                                     <img 
-                                                        :src="item.product.image || 'https://picsum.photos/50/50'" 
+                                                        :src="formatImageUrl(item.product.image)" 
                                                         :alt="item.product.title" 
-                                                        class="order-item-image mr-2"
+                                                        class="order-item-image mr-2 border"
                                                     >
                                                     <div>
                                                         <div class="font-weight-bold">{{ item.product.title }}</div>
@@ -257,7 +258,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import api from '@/utils/api';
-import { formatCurrency, formatDate, getOrderStatusText, getPaymentMethodText } from '@/utils/helpers';
+import { formatCurrency, formatDate, getOrderStatusText, getPaymentMethodText, formatImageUrl } from '@/utils/helpers';
 
 export default {
     name: 'OrderDetail',
@@ -295,6 +296,7 @@ methods: {
     formatDate,
     getOrderStatusText,
     getPaymentMethodText,
+    formatImageUrl,
     getPaymentStatusText(status) {
     const statusMap = {
         'pending': 'Awaiting payment',

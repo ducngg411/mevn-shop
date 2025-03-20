@@ -7,33 +7,43 @@
 					<li data-target="#homeCarousel" data-slide-to="0" class="active"></li>
 					<li data-target="#homeCarousel" data-slide-to="1"></li>
 					<li data-target="#homeCarousel" data-slide-to="2"></li>
+					<li data-target="#homeCarousel" data-slide-to="3"></li>
 				</ol>
 				<div class="carousel-inner">
 					<div class="carousel-item active">
-						<div class="carousel-overlay"></div>
-						<img src="https://picsum.photos/id/119/1200/400" class="d-block w-100" alt="Slide 1">
+						<!-- <div class="carousel-overlay"></div> -->
+						<img src="https://cdn.divineshop.vn/image/catalog/Netflix-11025.png?hash=1739505080" class="d-block w-100" alt="Slide 1">
 						<div class="carousel-caption">
-							<h1>Buy Accounts Online</h1>
+							<!-- <h1>Buy Accounts Online</h1>
 							<p>The platform for buying and selling premium accounts at the best prices.</p>
-							<router-link to="/products" class="btn btn-primary btn-lg">Explore Now</router-link>
+							<router-link to="/products" class="btn btn-primary btn-lg">Explore Now</router-link> -->
 						</div>
 					</div>
 					<div class="carousel-item">
-						<div class="carousel-overlay"></div>
-						<img src="https://picsum.photos/id/180/1200/400" class="d-block w-100" alt="Slide 2">
+						<!-- <div class="carousel-overlay"></div> -->
+						<img src="https://cdn.divineshop.vn/image/catalog/Capcut-86373.png?hash=1735881306" class="d-block w-100" alt="Slide 2">
 						<div class="carousel-caption">
-							<h1>Simple Payment</h1>
+							<!-- <h1>Simple Payment</h1>
 							<p>Easy payment and instant account delivery</p>
-							<router-link to="/products" class="btn btn-primary btn-lg">Buy Now</router-link>
+							<router-link to="/products" class="btn btn-primary btn-lg">Buy Now</router-link> -->
 						</div>
 					</div>
 					<div class="carousel-item">
-						<div class="carousel-overlay"></div>
-						<img src="https://picsum.photos/id/201/1200/400" class="d-block w-100" alt="Slide 3">
+						<!-- <div class="carousel-overlay"></div> -->
+						<img src="https://cdn.divineshop.vn/image/catalog/banner%20Google%20One%20(1)-90108.png?hash=1735892847" class="d-block w-100" alt="Slide 3">
 						<div class="carousel-caption">
-							<h1>24/7 Support</h1>
+							<!-- <h1>24/7 Support</h1>
 							<p>Our support team is always ready to assist you</p>
-							<router-link to="/contact" class="btn btn-primary btn-lg">Contact Us</router-link>
+							<router-link to="/contact" class="btn btn-primary btn-lg">Contact Us</router-link> -->
+						</div>
+					</div>
+					<div class="carousel-item">
+						<!-- <div class="carousel-overlay"></div> -->
+						<img src="https://cdn.divineshop.vn/image/catalog/Banner/iQIYI2-64713.png?hash=1736914879" class="d-block w-100" alt="Slide 4">
+						<div class="carousel-caption">
+							<!-- <h1>24/7 Support</h1>
+							<p>Our support team is always ready to assist you</p>
+							<router-link to="/contact" class="btn btn-primary btn-lg">Contact Us</router-link> -->
 						</div>
 					</div>
 				</div>
@@ -86,7 +96,8 @@
 					<template v-else>
 						<div class="col-md-3 mb-4" v-for="product in products" :key="product._id">
 							<div class="card h-100 product-card">
-								<img :src="product.image || 'https://picsum.photos/300/200'" class="card-img-top" :alt="product.title">
+								<!-- <img :src="product.image || 'https://picsum.photos/300/200'" class="card-img-top" :alt="product.title"> -->
+								<img :src="formatImageUrl(product.image)" class="card-img-top" :alt="product.title">
 								<div class="card-body d-flex flex-column">
 									<h5 class="card-title">{{ product.title }}</h5>
 									<p class="card-text flex-grow-1">{{ truncateText(product.description, 100) }}</p>
@@ -183,7 +194,7 @@
 <script>
 import { mapActions } from 'vuex';
 import api from '@/utils/api';
-import { formatCurrency, truncateText } from '@/utils/helpers';
+import { formatCurrency, formatImageUrl, truncateText } from '@/utils/helpers';
 
 export default {
 	name: 'Home',
@@ -202,13 +213,13 @@ export default {
 					name: 'Learning',
 					icon: 'huge book icon text-primary',
 					description: 'Coursera, Udemy, Skillshare, Lynda...',
-					slug: 'Learning'
+					slug: 'Education'
 				},
 				{
 					name: 'Games',
 					icon: 'huge gamepad icon text-primary',
 					description: 'Steam, Origin, Uplay, Epic Games...',
-					slug: 'Games'
+					slug: 'Gaming'
 				}
 			],
 			testimonials: [
@@ -242,10 +253,11 @@ export default {
 		}),
 		formatCurrency,
 		truncateText,
+		formatImageUrl,
 		async fetchFeaturedProducts() {
 			try {
 				this.productsLoading = true;
-				const response = await api.get('/products?limit=4');
+				const response = await api.get('/products?limit=8');
 				if (response.data.success) {
 					this.products = response.data.products;
 				}
@@ -271,7 +283,7 @@ export default {
 		// Initialize Bootstrap carousel
 		if (typeof window !== 'undefined' && window.jQuery) {
 			window.jQuery('#homeCarousel').carousel({
-				interval: 5000
+				interval: 3000
 			});
 		}
 	}

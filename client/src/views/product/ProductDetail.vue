@@ -24,7 +24,8 @@
                     <!-- Product Image -->
                     <div class="col-md-5 mb-4">
                         <div class="product-image">
-                            <img :src="product.image || 'https://picsum.photos/600/400'" alt="Product" class="img-fluid rounded">
+                            <!-- <img :src="product.image || 'https://picsum.photos/600/400'" alt="Product" class="img-fluid rounded"> -->
+                            <img :src="formatImageUrl(product.image)" class="card-img-top border" :alt="product.title">
                         </div>
                     </div>
                     
@@ -76,7 +77,9 @@
                             </button>
                             
                             <button class="btn btn-success btn-lg" @click="buyNow" :disabled="product.availableStock <= 0">
-                                <i class="credit card icon"></i> Buy Now
+                                <svg xmlns="http://www.w3.org/2000/svg" width="17.5" height="17.5" fill="currentColor" class="bi bi-credit-card-fill" viewBox="0 0 16 16">
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm0 3v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7zm3 2h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1"/>
+</svg> Buy Now
                             </button>
                         </div>
                     </div>
@@ -214,7 +217,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import api from '@/utils/api';
 import ProductCard from '@/components/common/ProductCard.vue';
-import { formatCurrency, formatDate } from '@/utils/helpers';
+import { formatCurrency, formatDate, formatImageUrl } from '@/utils/helpers';
 
 export default {
     name: 'ProductDetail',
@@ -252,6 +255,7 @@ export default {
         }),
         formatCurrency,
         formatDate,
+        formatImageUrl,
         async fetchProduct() {
             try {
                 this.loading = true;
@@ -570,6 +574,11 @@ export default {
 .related-products .card:hover {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     transform: translateY(-2px);
+}
+
+.bi-credit-card-fill {
+    margin-right: 5px;
+    margin-bottom: 3px;
 }
 
 </style>

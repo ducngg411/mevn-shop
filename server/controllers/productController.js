@@ -6,38 +6,87 @@ const Account = require('../models/Account');
 // @access  Public
 const getProducts = async (req, res) => {
     try {
-        const pageSize = 10;
+        const pageSize = Number(req.query.limit) || 10;
         const page = Number(req.query.pageNumber) || 1;
         
+        // Xây dựng điều kiện tìm kiếm
         const keyword = req.query.keyword
-        ? {
-            title: {
-                $regex: req.query.keyword,
-                $options: 'i',
-            },
-            }
-        : {};
+            ? { title: { $regex: req.query.keyword, $options: 'i' } }
+            : {};
         
         const category = req.query.category ? { category: req.query.category } : {};
         
-        const count = await Product.countDocuments({ ...keyword, ...category });
+        // Xử lý lọc theo giá
+        let priceFilter = {};
+        if (req.query.minPrice && req.query.maxPrice) {
+            priceFilter = {
+                $or: [
+                    // Kiểm tra giá gốc
+                    { 
+                        price: { 
+                            $gte: Number(req.query.minPrice), 
+                            $lte: Number(req.query.maxPrice) 
+                        } 
+                    },
+                    // Kiểm tra giá khuyến mãi nếu có
+                    { 
+                        discountPrice: { 
+                            $gt: 0, 
+                            $gte: Number(req.query.minPrice), 
+                            $lte: Number(req.query.maxPrice) 
+                        } 
+                    }
+                ]
+            };
+        } else if (req.query.minPrice) {
+            priceFilter = {
+                $or: [
+                    { price: { $gte: Number(req.query.minPrice) } },
+                    { discountPrice: { $gt: 0, $gte: Number(req.query.minPrice) } }
+                ]
+            };
+        }
+
+        const searchConditions = { ...keyword, ...category, ...priceFilter };
         
-        const products = await Product.find({ ...keyword, ...category })
+        const count = await Product.countDocuments(searchConditions);
+        
+        let sortOptions = {};
+        if (req.query.sortBy) {
+            const [field, direction] = req.query.sortBy.split('_');
+            sortOptions[field] = direction === 'asc' ? 1 : -1;
+        } else {
+            sortOptions = { createdAt: -1 }; // Mặc định sắp xếp theo thời gian tạo giảm dần
+        }
+        
+        const products = await Product.find(searchConditions)
             .limit(pageSize)
             .skip(pageSize * (page - 1))
-            .sort({ createdAt: -1 });
+            .sort(sortOptions);
+
+        const productsWithStock = await Promise.all(products.map(async product => {
+            const availableAccounts = await Account.countDocuments({
+                    product: product._id,
+                    status: 'available'
+                });
+                
+                return {
+                    ...product._doc,
+                    availableStock: availableAccounts
+                };
+            }));
         
         res.json({
             success: true,
-            products,
+            products: productsWithStock,
             page,
             pages: Math.ceil(count / pageSize),
             total: count,
         });
     } catch (error) {
         res.status(500).json({
-        success: false,
-        message: error.message,
+            success: false,
+            message: error.message,
         });
     }
 };

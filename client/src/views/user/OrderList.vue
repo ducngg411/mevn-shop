@@ -88,7 +88,8 @@
                                                     class="badge" 
                                                     :class="{
                                                         'badge-success': order.paymentStatus === 'completed',
-                                                        'badge-warning': order.paymentStatus === 'pending'
+                                                        'badge-warning': order.paymentStatus === 'pending',
+                                                        'badge-danger': order.paymentStatus === 'cancelled'
                                                     }"
                                                 >
                                                     {{ getPaymentStatusText(order.paymentStatus) }}

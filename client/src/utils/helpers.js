@@ -39,3 +39,27 @@ export const truncateText = (text, length = 100) => {
         ? text.substring(0, length) + '...'
         : text
 }
+
+export const formatImageUrl = (imageUrl) => {
+    if (!imageUrl) return 'https://picsum.photos/300/200';
+
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+        return imageUrl;
+    }
+
+    const apiUrl = process.env.VUE_APP_API_URL || 'http://localhost:5000/api';
+    const baseURL = apiUrl.replace(/\/api$/, '');
+    
+    if (imageUrl.startsWith('/uploads')) {
+        return baseURL + imageUrl;
+    }
+
+    if (!imageUrl.startsWith('/')) {
+        if (imageUrl.startsWith('uploads')) {
+            return `${baseURL}/${imageUrl}`;
+        } else {
+            return `${baseURL}/uploads/${imageUrl}`
+        }
+    }
+    return `${baseURL}${imageUrl}`;
+}

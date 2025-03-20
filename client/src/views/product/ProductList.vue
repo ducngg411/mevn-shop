@@ -51,23 +51,23 @@
                         <div class="form-group mb-4">
                             <!-- Price filter options -->
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="priceAll" name="price" class="custom-control-input" v-model="priceRange" value="all">
+                                <input type="radio" id="priceAll" name="price" class="custom-control-input" v-model="priceRange" value="all" @change="applyPriceFilter">
                                 <label class="custom-control-label" for="priceAll">All</label>
                             </div>
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="price1" name="price" class="custom-control-input" v-model="priceRange" value="0-100000">
+                                <input type="radio" id="price1" name="price" class="custom-control-input" v-model="priceRange" value="0-100000" @change="applyPriceFilter">
                                 <label class="custom-control-label" for="price1">Under 100,000 VND</label>
                             </div>
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="price2" name="price" class="custom-control-input" v-model="priceRange" value="100000-300000">
+                                <input type="radio" id="price2" name="price" class="custom-control-input" v-model="priceRange" value="100000-300000" @change="applyPriceFilter">
                                 <label class="custom-control-label" for="price2">100,000 VND - 300,000 VND</label>
                             </div>
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="price3" name="price" class="custom-control-input" v-model="priceRange" value="300000-500000">
+                                <input type="radio" id="price3" name="price" class="custom-control-input" v-model="priceRange" value="300000-500000" @change="applyPriceFilter">
                                 <label class="custom-control-label" for="price3">300,000 VND - 500,000 VND</label>
                             </div>
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="price4" name="price" class="custom-control-input" v-model="priceRange" value="500000+">
+                                <input type="radio" id="price4" name="price" class="custom-control-input" v-model="priceRange" value="500000+" @change="applyPriceFilter">
                                 <label class="custom-control-label" for="price4">Over 500,000 VND</label>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                     <div class="page-content">
                         <!-- Sorting and Results Display -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <p class="mb-0">Displaying {{ filteredProducts.length }} products</p>
+                            <p class="mb-0">Displaying {{ products.length }} products ({{ totalProducts }} total)</p>
                             <div class="form-inline">
                                 <label class="mr-2" for="sortBy">Sort by:</label>
                                 <select class="form-control" id="sortBy" v-model="sortBy" @change="applySorting">
@@ -103,7 +103,7 @@
                         </div>
                         
                         <!-- No results found -->
-                        <div v-else-if="filteredProducts.length === 0" class="text-center py-5">
+                        <div v-else-if="products.length === 0" class="text-center py-5">
                             <i class="huge search icon text-muted"></i>
                             <h3 class="mt-3">No results found</h3>
                             <p class="text-muted">Please try with different keywords or filters</p>
@@ -115,7 +115,7 @@
                         <!-- Product List -->
                         <div v-else class="row">
                             <div 
-                                v-for="product in paginatedProducts" 
+                                v-for="product in products" 
                                 :key="product._id" 
                                 class="col-md-4 mb-4"
                             >
@@ -124,7 +124,7 @@
                         </div>
                         
                         <!-- Pagination -->
-                        <div v-if="filteredProducts.length > itemsPerPage" class="d-flex justify-content-center mt-4">
+                        <div v-if="totalPages > 1" class="d-flex justify-content-center mt-4">
                             <ul class="pagination">
                                 <li class="page-item" :class="{ 'disabled': currentPage === 1 }">
                                     <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">
@@ -156,6 +156,7 @@
 <script>
 import ProductCard from '@/components/common/ProductCard.vue';
 import api from '@/utils/api';
+import { formatImageUrl } from '@/utils/helpers';
 
 export default {
     name: 'ProductList',
@@ -172,88 +173,59 @@ export default {
             priceRange: 'all',
             sortBy: 'createdAt_desc',
             currentPage: 1,
+            totalPages: 1,
+            totalProducts: 0,
             itemsPerPage: 9,
             categories: ['Entertainment', 'Education', 'Gaming', 'Tools', 'Other']
         }
     },
-    computed: {
-        filteredProducts() {
-            let result = [...this.products];
-            
-            // Filter by category
-            if (this.selectedCategory) {
-                result = result.filter(p => p.category === this.selectedCategory);
-            }
-            
-            // Filter by search query
-            if (this.searchQuery) {
-                const query = this.searchQuery.toLowerCase();
-                result = result.filter(p => 
-                    p.title.toLowerCase().includes(query) || 
-                    p.description.toLowerCase().includes(query)
-                );
-            }
-            
-            // Filter by price
-            if (this.priceRange !== 'all') {
-                const [min, max] = this.priceRange.split('-');
-                const effectivePrice = p => p.discountPrice > 0 ? p.discountPrice : p.price;
-                
-                if (max) {
-                    result = result.filter(p => effectivePrice(p) >= parseInt(min) && effectivePrice(p) <= parseInt(max));
-                } else {
-                    result = result.filter(p => effectivePrice(p) >= parseInt(min.replace('+', '')));
-                }
-            }
-            
-            // Sorting
-            const [field, direction] = this.sortBy.split('_');
-            
-            result.sort((a, b) => {
-                let valueA, valueB;
-                
-                if (field === 'price') {
-                    valueA = a.discountPrice > 0 ? a.discountPrice : a.price;
-                    valueB = b.discountPrice > 0 ? b.discountPrice : b.price;
-                } else {
-                    valueA = a[field];
-                    valueB = b[field];
-                }
-                
-                if (typeof valueA === 'string') {
-                    if (direction === 'asc') {
-                        return valueA.localeCompare(valueB);
-                    } else {
-                        return valueB.localeCompare(valueA);
-                    }
-                } else {
-                    if (direction === 'asc') {
-                        return valueA - valueB;
-                    } else {
-                        return valueB - valueA;
-                    }
-                }
-            });
-            
-            return result;
-        },
-        paginatedProducts() {
-            const start = (this.currentPage - 1) * this.itemsPerPage;
-            const end = start + this.itemsPerPage;
-            return this.filteredProducts.slice(start, end);
-        },
-        totalPages() {
-            return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
-        }
-    },
     methods: {
+        formatImageUrl,
+
+        applyPriceFilter() {
+            this.currentPage = 1;
+            this.fetchProducts();
+        },
+
         async fetchProducts() {
             try {
                 this.loading = true;
-                const response = await api.get('/products');
+                
+                // Xây dựng URL với các tham số
+                let url = `/products?pageNumber=${this.currentPage}&limit=${this.itemsPerPage}`;
+                
+                if (this.searchQuery) {
+                    url += `&keyword=${this.searchQuery}`;
+                }
+                
+                if (this.selectedCategory) {
+                    url += `&category=${this.selectedCategory}`;
+                }
+                
+                // Thêm tham số giá
+                if (this.priceRange !== 'all') {
+                    const [min, max] = this.priceRange.split('-');
+                    
+                    if (max) {
+                        url += `&minPrice=${min}&maxPrice=${max}`;
+                    } else {
+                        // Xử lý trường hợp "500000+"
+                        url += `&minPrice=${min.replace('+', '')}`;
+                    }
+                }
+                
+                // Thêm tham số sắp xếp
+                if (this.sortBy) {
+                    url += `&sortBy=${this.sortBy}`;
+                }
+                
+                const response = await api.get(url);
                 
                 if (response.data.success) {
                     this.products = response.data.products;
+                    this.currentPage = response.data.page;
+                    this.totalPages = response.data.pages;
+                    this.totalProducts = response.data.total;
                 }
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -263,40 +235,50 @@ export default {
                 this.loading = false;
             }
         },
+        
+        changePage(page) {
+            if (page < 1 || page > this.totalPages) {
+                return;
+            }
+            this.currentPage = page;
+            this.fetchProducts();
+            // Scroll to top
+            window.scrollTo(0, 0);
+        },
+        
+        searchProducts() {
+            this.currentPage = 1;
+            this.fetchProducts();
+        },
+        
         selectCategory(category) {
             this.selectedCategory = category;
             this.currentPage = 1;
+            this.fetchProducts();
         },
-        searchProducts() {
-            this.currentPage = 1;
-        },
+        
         applyFilters() {
             this.currentPage = 1;
+            this.fetchProducts();
         },
+        
         applySorting() {
             this.currentPage = 1;
+            this.fetchProducts();
         },
+        
         resetFilters() {
             this.selectedCategory = null;
             this.searchQuery = '';
             this.priceRange = 'all';
             this.sortBy = 'createdAt_desc';
             this.currentPage = 1;
-        },
-        changePage(page) {
-            if (page < 1 || page > this.totalPages) {
-                return;
-            }
-            this.currentPage = page;
-            // Scroll to top
-            window.scrollTo(0, 0);
+            this.fetchProducts();
         }
     },
     created() {
-        this.fetchProducts();
-        
-        // Check query params
-        const { category, search } = this.$route.query;
+        // Kiểm tra query params
+        const { category, search, page } = this.$route.query;
         
         if (category && this.categories.includes(category)) {
             this.selectedCategory = category;
@@ -305,21 +287,13 @@ export default {
         if (search) {
             this.searchQuery = search;
         }
-    },
-    watch: {
-        // Update URL when filter changes
-        '$route.query': {
-            handler(query) {
-                if (query.category && this.categories.includes(query.category)) {
-                    this.selectedCategory = query.category;
-                }
-                
-                if (query.search) {
-                    this.searchQuery = query.search;
-                }
-            },
-            immediate: true
+        
+        if (page) {
+            this.currentPage = parseInt(page);
         }
+        
+        // Fetch sản phẩm
+        this.fetchProducts();
     }
 }
 </script>
@@ -349,6 +323,7 @@ export default {
 .pagination .page-item.active .page-link {
     background-color: #3498db;
     border-color: #3498db;
+    color: white;
 }
 
 .pagination .page-link {

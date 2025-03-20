@@ -50,25 +50,24 @@
 							</li>
 						</template>
 						
-						<!-- User logged in -->
-						<li v-else class="nav-item dropdown">
+						<!-- User logged in - Vue managed dropdown -->
+						<li v-else class="nav-item dropdown" ref="userDropdownContainer">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" 
-							role="button" data-toggle="dropdown" aria-haspopup="true" 
-							aria-expanded="false">
+							   @click.prevent="toggleDropdown">
 								<i class="user circle icon"></i> {{ user ? user.username : 'Account' }}
 							</a>
-							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-								<router-link class="dropdown-item" to="/profile">
+							<div class="dropdown-menu dropdown-menu-right" :class="{'show': dropdownVisible}">
+								<router-link class="dropdown-item" to="/profile" @click="closeDropdown">
 									<i class="id card icon"></i> Profile
 								</router-link>
-								<router-link class="dropdown-item" to="/orders">
+								<router-link class="dropdown-item" to="/orders" @click="closeDropdown">
 									<i class="shopping bag icon"></i> My Orders
 								</router-link>
 								
 								<!-- Admin Menu -->
 								<template v-if="isAdmin">
 									<div class="dropdown-divider"></div>
-									<router-link class="dropdown-item" to="/admin">
+									<router-link class="dropdown-item" to="/admin" @click="closeDropdown">
 										<i class="dashboard icon"></i> Admin Dashboard
 									</router-link>
 								</template>
@@ -93,7 +92,8 @@ export default {
 	name: 'AppHeader',
 	data() {
 		return {
-			appTitle: process.env.VUE_APP_TITLE || 'MEVN Shop'
+			appTitle: process.env.VUE_APP_TITLE || 'MEVN Shop',
+			dropdownVisible: false
 		}
 	},
 	computed: {
@@ -112,26 +112,36 @@ export default {
 		}),
 		logout() {
 			this.logoutAction();
+			this.closeDropdown();
+			this.$router.push('/login');
+		},
+		toggleDropdown() {
+			this.dropdownVisible = !this.dropdownVisible;
+		},
+		closeDropdown() {
+			this.dropdownVisible = false;
+		},
+		handleClickOutside(event) {
+			// Kiểm tra nếu click bên ngoài dropdown
+			const container = this.$refs.userDropdownContainer;
+			if (container && !container.contains(event.target)) {
+				this.closeDropdown();
+			}
 		}
 	},
 	mounted() {
-		// Ensure Bootstrap JS is used for dropdown
-		document.querySelectorAll('.dropdown-toggle').forEach(dropdown => {
-			dropdown.addEventListener('click', function() {
-				this.closest('.dropdown').classList.toggle('show');
-				this.nextElementSibling.classList.toggle('show');
-			});
-		});
-		
-		// Close dropdown when clicking outside
-		window.addEventListener('click', (e) => {
-			if (!e.target.matches('.dropdown-toggle')) {
-				document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-					menu.classList.remove('show');
-					menu.parentElement.classList.remove('show');
-				});
-			}
-		});
+		// Thêm event listener để bắt sự kiện click ngoài dropdown
+		document.addEventListener('click', this.handleClickOutside);
+	},
+	beforeDestroy() {
+		// Dọn dẹp event listener khi component bị hủy
+		document.removeEventListener('click', this.handleClickOutside);
+	},
+	watch: {
+		// Theo dõi thay đổi route để đóng dropdown khi chuyển trang
+		$route() {
+			this.closeDropdown();
+		}
 	}
 }
 </script>
@@ -163,5 +173,20 @@ export default {
 
 .dropdown-item i {
 	margin-right: 8px;
+}
+
+/* Thêm các style để đảm bảo dropdown hoạt động đúng */
+.nav-item.dropdown {
+	position: relative;
+}
+
+.dropdown-menu {
+	position: absolute;
+	right: 0;
+	left: auto;
+	top: 100%;
+	z-index: 1000;
+	min-width: 10rem;
+	margin-top: 0.125rem;
 }
 </style>
