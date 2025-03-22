@@ -79,7 +79,7 @@ export default {
 			}
 			
 			this.addToCartAction({ product: this.product, quantity: 1 });
-			this.$flash.success(`Added ${this.product.title} to cart!`);
+			this.$toast.success(`Added ${this.product.title} to cart!`);
 		}
 	}
 }

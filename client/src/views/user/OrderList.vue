@@ -170,7 +170,7 @@ export default {
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
-                this.$flash.error('Unable to load order list');
+                this.$toast.error('Unable to load order list');
             } finally {
                 this.loading = false;
             }
@@ -184,7 +184,7 @@ export default {
                 }
             } catch (error) {
                 console.error('Error creating payment session:', error);
-                this.$flash.error('Unable to create payment session. Please try again later.');
+                this.$toast.error('Unable to create payment session. Please try again later.');
             }
         }
     },

@@ -165,11 +165,11 @@ export default {
         copyToClipboard(text) {
             navigator.clipboard.writeText(text)
                 .then(() => {
-                    this.$flash.success('Copied to clipboard');
+                    this.$toast.success('Copied to clipboard');
                 })
                 .catch(err => {
                     console.error('Failed to copy: ', err);
-                    this.$flash.error('Could not copy. Please try again.');
+                    this.$toast.error('Could not copy. Please try again.');
                 });
         },
         async fetchOrder() {

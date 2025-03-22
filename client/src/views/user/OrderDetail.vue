@@ -90,7 +90,10 @@
                                                         class="order-item-image mr-2 border"
                                                     >
                                                     <div>
-                                                        <div class="font-weight-bold">{{ item.product.title }}</div>
+                                                        <div class="font-weight-bold">
+                                                            <router-link :to="`/products/${item.product._id}`">{{ item.product.title }}</router-link>
+                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </td>
@@ -307,11 +310,11 @@ methods: {
     copyToClipboard(text) {
         navigator.clipboard.writeText(text)
         .then(() => {
-            this.$flash.success('Copied to clipboard');
+            this.$toast.success('Copied to clipboard');
         })
         .catch(err => {
             console.error('Failed to copy: ', err);
-            this.$flash.error('Could not copy. Please try again.');
+            this.$toast.error('Could not copy. Please try again.');
         });
     },
     async fetchOrder() {
@@ -383,7 +386,7 @@ methods: {
             }
         } catch (error) {
             console.error('Error creating payment session:', error);
-            this.$flash.error('Unable to create payment session. Please try again later.');
+            this.$toast.error('Unable to create payment session. Please try again later.');
         }
     },
     async cancelOrder() {
@@ -396,14 +399,14 @@ methods: {
         
         if (response.data.success) {
             this.showCancelConfirm = false;
-            this.$flash.success('Order has been successfully canceled');
+            this.$toast.success('Order has been successfully canceled');
             
           // Reload order information
             this.fetchOrder();
         }
     } catch (error) {
         console.error('Error cancelling order:', error);
-        this.$flash.error(error.response?.data?.message || 'Unable to cancel order. Please try again later.');
+        this.$toast.error(error.response?.data?.message || 'Unable to cancel order. Please try again later.');
         } finally {
             this.cancelling = false;
         }

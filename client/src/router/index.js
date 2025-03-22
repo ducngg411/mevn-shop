@@ -126,6 +126,22 @@ const routes = [
   //   component: () => import('../views/admin/UserManagement.vue'),
   //   meta: { requiresAuth: true, requiresAdmin: true }
   // }
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('../views/ForgotPassword.vue')
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: () => import('../views/auth/ResetPassword.vue')
+  },
+
+  {
+    path: '/change-password',
+    name: 'ChangePassword',
+    component: () => import('../views/auth/ChangePassword.vue')
+  }
 ]
 
 const router = new VueRouter({

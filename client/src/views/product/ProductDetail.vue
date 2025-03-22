@@ -320,7 +320,7 @@ export default {
                 });
                 
                 if (response.data.success) {
-                    this.$flash.success('Your review has been successfully submitted!');
+                    this.$toast.success('Your review has been successfully submitted!');
                     
                     // Reset form
                     this.newReview = {
@@ -334,7 +334,7 @@ export default {
                 }
             } catch (error) {
                 console.error('Error submitting review:', error);
-                this.$flash.error(error.response?.data?.message || 'Unable to submit review');
+                this.$toast.error(error.response?.data?.message || 'Unable to submit review');
             } finally {
                 this.submittingReview = false;
             }
@@ -359,7 +359,7 @@ export default {
                 quantity: this.quantity
             });
             
-            this.$flash.success(`Added ${this.quantity} account(s) of ${this.product.title} to the cart!`);
+            this.$toast.success(`Added ${this.quantity} account(s) of ${this.product.title} to the cart!`);
         },
         buyNow() {
             this.addToCart();

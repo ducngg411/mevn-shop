@@ -147,6 +147,11 @@ export default {
 </script>
 
 <style scoped>
+
+header {
+	position: sticky;
+}
+
 .cart-badge {
 	position: absolute;
 	top: 0;
@@ -156,6 +161,8 @@ export default {
 
 .dropdown-menu.show {
 	display: block;
+	z-index: 1050;
+	
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -169,6 +176,7 @@ export default {
 
 .dropdown-item {
 	padding: 0.5rem 1.5rem;
+	
 }
 
 .dropdown-item i {
@@ -185,7 +193,7 @@ export default {
 	right: 0;
 	left: auto;
 	top: 100%;
-	z-index: 1000;
+	z-index: 1050;
 	min-width: 10rem;
 	margin-top: 0.125rem;
 }

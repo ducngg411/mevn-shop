@@ -213,7 +213,7 @@ export default {
 					address: this.userData.address
 				});
 				
-				this.$flash.success('Profile updated successfully!');
+				this.$toast.success('Profile updated successfully!');
 			} catch (error) {
 				console.error('Error updating profile:', error);
 				this.error = error.response?.data?.message || 'Unable to update profile';

@@ -520,7 +520,7 @@ export default {
 				}
 			} catch (error) {
 				console.error('Error fetching products:', error);
-				this.$flash.error('Unable to load product list');
+				this.$toast.error('Unable to load product list');
 			} finally {
 				this.loading = false;
 			}
@@ -651,7 +651,7 @@ export default {
 			// Check file format
 			const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 			if (!allowedTypes.includes(file.type)) {
-				this.$flash.error('Unsupported file format. Please select JPG, PNG, or GIF.');
+				this.$toast.error('Unsupported file format. Please select JPG, PNG, or GIF.');
 				event.target.value = '';
 				return;
 			}
@@ -659,7 +659,7 @@ export default {
 			// Check file size (max 5MB)
 			const maxSize = 5 * 1024 * 1024; // 5MB
 			if (file.size > maxSize) {
-				this.$flash.error('File size is too large. Max size is 5MB.');
+				this.$toast.error('File size is too large. Max size is 5MB.');
 				event.target.value = '';
 				return;
 			}
@@ -745,7 +745,7 @@ export default {
 				
 				if (response.data.success) {
 					this.showProductModal = false;
-					this.$flash.success(this.editMode ? 'Store updated successfully!' : 'Store added successfully!');
+					this.$toast.success(this.editMode ? 'Store updated successfully!' : 'Store added successfully!');
 					
 					// Reload product list
 					this.fetchProducts();
@@ -777,12 +777,12 @@ export default {
 						await api.delete(`/products/${productId}`);
 					}
 					
-					this.$flash.success(`Deleted ${this.selectedProducts.length} stores!`);
+					this.$toast.success(`Deleted ${this.selectedProducts.length} stores!`);
 					this.selectedProducts = [];
 				} else {
 					// Delete a single product
 					await api.delete(`/products/${this.productToDelete._id}`);
-					this.$flash.success('Store deleted successfully!');
+					this.$toast.success('Store deleted successfully!');
 				}
 				
 				this.showDeleteModal = false;
@@ -791,7 +791,7 @@ export default {
 				this.fetchProducts();
 			} catch (error) {
 				console.error('Error deleting products:', error);
-				this.$flash.error(error.response?.data?.message || 'Unable to delete store. Please try again later.');
+				this.$toast.error(error.response?.data?.message || 'Unable to delete store. Please try again later.');
 			} finally {
 				this.deleting = false;
 			}

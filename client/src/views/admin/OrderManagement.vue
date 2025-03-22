@@ -645,7 +645,7 @@ export default {
 				}
 			} catch (error) {
 				console.error('Error fetching orders:', error);
-				this.$flash.error('Unable to load order list');
+				this.$toast.error('Unable to load order list');
 			} finally {
 				this.loading = false;
 			}
@@ -747,10 +747,10 @@ export default {
 		},
 		copyToClipboard(text) {
 			navigator.clipboard.writeText(text).then(() => {
-				this.$flash.success('Copied to clipboard');
+				this.$toast.success('Copied to clipboard');
 			}).catch(err => {
 				console.error('Unable to copy: ', err);
-				this.$flash.error('Unable to copy. Please try again.');
+				this.$toast.error('Unable to copy. Please try again.');
 			});
 		},
 		async viewOrderDetail(order) {
@@ -772,7 +772,7 @@ export default {
 				}
 			} catch (error) {
 				console.error('Error fetching order details:', error);
-				this.$flash.error('Unable to load order detail information');
+				this.$toast.error('Unable to load order detail information');
 			} finally {
 				this.orderDetailLoading = false;
 			}
@@ -812,7 +812,7 @@ export default {
 				const response = await api.put(`/orders/${this.selectedOrder._id}/status`, updateData);
 
 				if (response.data.success) {
-					this.$flash.success('Order status updated successfully!');
+					this.$toast.success('Order status updated successfully!');
 					this.showUpdateStatusModal = false;
 
 					// Update the order in the list
@@ -866,7 +866,7 @@ export default {
 					await api.put(`/orders/${orderId}/status`, updateData);
 				}
 
-				this.$flash.success(`Updated ${this.selectedOrders.length} orders!`);
+				this.$toast.success(`Updated ${this.selectedOrders.length} orders!`);
 				this.showBulkUpdateStatusModal = false;
 				this.selectedOrders = [];
 

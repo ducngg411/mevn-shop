@@ -196,6 +196,7 @@ export default {
                 product: item.product,
                 quantity: item.quantity + 1
             });
+            this.voucher = null;
         },
         decreaseQuantity(index) {
             const item = this.cartItems[index];
@@ -205,6 +206,7 @@ export default {
                     quantity: item.quantity - 1
                 });
             }
+            this.voucher = null;
         },
         updateQuantity(index, quantity) {
             const item = this.cartItems[index];
@@ -219,7 +221,8 @@ export default {
         removeItem(index) {
             const item = this.cartItems[index];
             this.removeFromCart(item.product);
-            this.$flash.success('Product removed from cart');
+            this.$toast.success('Product removed from cart');
+            this.voucher = null;
         },
         clearCart() {
             this.clearCartAction();
@@ -227,7 +230,7 @@ export default {
             this.voucher = null;
             this.discountAmount = 0;
             this.voucherCode = '';
-            this.$flash.success('All items cleared from cart');
+            this.$toast.success('All items cleared from cart');
         },
         async applyVoucher() {
             if (!this.voucherCode) return;
@@ -243,11 +246,11 @@ export default {
                 if (response.data.success) {
                     this.voucher = response.data.voucher;
                     this.discountAmount = response.data.discountAmount;
-                    this.$flash.success('Discount code applied successfully!');
+                    this.$toast.success('Discount code applied successfully!');
                 }
             } catch (error) {
                 console.error('Error applying voucher:', error);
-                this.$flash.error(error.response?.data?.message || 'Unable to apply discount code');
+                this.$toast.error(error.response?.data?.message || 'Unable to apply discount code');
             } finally {
                 this.checkingVoucher = false;
             }
@@ -256,7 +259,7 @@ export default {
             this.voucher = null;
             this.discountAmount = 0;
             this.voucherCode = '';
-            this.$flash.info('Discount code removed');
+            this.$toast.info('Discount code removed');
         },
         proceedToCheckout() {
             if (!this.isAuthenticated) {
@@ -265,7 +268,7 @@ export default {
             }
             
             if (this.cartItems.length === 0) {
-                this.$flash.error('Your cart is empty, cannot proceed to checkout');
+                this.$toast.error('Your cart is empty, cannot proceed to checkout');
                 return;
             }
             
@@ -282,19 +285,19 @@ export default {
             this.$router.push('/checkout');
         }
     },
-    created() {
-        // Restore voucher information if any (when returning from checkout page)
-        const savedVoucher = localStorage.getItem('checkoutVoucher');
-        if (savedVoucher) {
-            try {
-                const voucherData = JSON.parse(savedVoucher);
-                this.voucherCode = voucherData.code;
-                this.applyVoucher();
-            } catch (error) {
-                console.error('Error parsing saved voucher:', error);
-            }
-        }
-    }
+    // created() {
+    //     // Restore voucher information if any (when returning from checkout page)
+    //     const savedVoucher = localStorage.getItem('checkoutVoucher');
+    //     if (savedVoucher) {
+    //         try {
+    //             const voucherData = JSON.parse(savedVoucher);
+    //             this.voucherCode = voucherData.code;
+    //             this.applyVoucher();
+    //         } catch (error) {
+    //             console.error('Error parsing saved voucher:', error);
+    //         }
+    //     }
+    // }
 }
 </script>
 

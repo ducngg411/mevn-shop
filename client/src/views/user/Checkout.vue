@@ -307,7 +307,7 @@ export default {
                 }
             } catch (error) {
                 console.error('Error placing order:', error);
-                this.$flash.error(error.response?.data?.message || 'Unable to place order. Please try again later.');
+                this.$toast.error(error.response?.data?.message || 'Unable to place order. Please try again later.');
             } finally {
                 this.placing = false;
             }

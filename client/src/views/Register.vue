@@ -245,7 +245,7 @@ export default {
 				});
 
 				// Success message and redirect to home
-				this.$flash.success('Registration successful!');
+				this.$toast.success('Registration successful!');
 				this.$router.push('/');
 			} catch (error) {
 				console.error('Register error:', error);
@@ -253,10 +253,10 @@ export default {
 		},
 		// Terms and Policy links
 		showTerms() {
-			this.$flash.info('Terms of Use are being updated');
+			this.$toast.info('Terms of Use are being updated');
 		},
 		showPolicy() {
-			this.$flash.info('Privacy Policy is being updated');
+			this.$toast.info('Privacy Policy is being updated');
 		}
 	}
 };

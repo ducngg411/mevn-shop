@@ -23,5 +23,9 @@ router.route('/:id')
     .put(protect, admin, updateVoucher)
     .delete(protect, admin, deleteVoucher);
 
+// Validate a voucher
+router.route('/validate')
+    .post(protect, validateVoucher);
+
 module.exports = router;
 

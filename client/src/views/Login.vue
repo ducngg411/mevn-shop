@@ -64,7 +64,7 @@
 						<!-- Links to register and reset password -->
 						<div class="text-center mt-4">
 							<p>No account? <router-link to="/register">Sign up</router-link></p>
-							<p><a href="#" @click.prevent="forgotPassword">Forgot password?</a></p>
+							<p><router-link to="/forgot-password">Forgot password?</router-link></p>
 						</div>
 					</div>
 				</div>
@@ -120,16 +120,12 @@ export default {
 				});
 
 				// Success message and redirect to the desired route
-				this.$flash.success('Login successful!');
+				this.$toast.success('Login successful!');
 				this.$router.push(this.redirect);
 			} catch (error) {
 				console.error('Login error:', error);
 			}
 		},
-		// Handle forgot password
-		forgotPassword() {
-			this.$flash.info('Feature under development');
-		}
 	}
 };
 </script>

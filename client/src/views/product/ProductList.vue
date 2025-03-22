@@ -230,7 +230,7 @@ export default {
             } catch (error) {
                 console.error('Error fetching products:', error);
                 this.error = error.response?.data?.message || 'Could not load the product list';
-                this.$flash.error(this.error);
+                this.$toast.error(this.error);
             } finally {
                 this.loading = false;
             }

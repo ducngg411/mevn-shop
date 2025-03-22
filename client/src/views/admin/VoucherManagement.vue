@@ -578,7 +578,7 @@ export default {
 				}
 			} catch (error) {
 				console.error('Error fetching vouchers:', error);
-				this.$flash.error('Unable to load voucher list');
+				this.$toast.error('Unable to load voucher list');
 			} finally {
 				this.loading = false;
 			}
@@ -751,7 +751,7 @@ export default {
 
 				if (response.data.success) {
 					this.showVoucherModal = false;
-					this.$flash.success(this.editMode ? 'Voucher updated successfully!' : 'New voucher added successfully!');
+					this.$toast.success(this.editMode ? 'Voucher updated successfully!' : 'New voucher added successfully!');
 
 					// Reload voucher list
 					this.fetchVouchers();
@@ -783,12 +783,12 @@ export default {
 						await api.delete(`/vouchers/${voucherId}`);
 					}
 
-					this.$flash.success(`Deleted ${this.selectedVouchers.length} vouchers!`);
+					this.$toast.success(`Deleted ${this.selectedVouchers.length} vouchers!`);
 					this.selectedVouchers = [];
 				} else {
 					// Delete single voucher
 					await api.delete(`/vouchers/${this.voucherToDelete._id}`);
-					this.$flash.success('Voucher deleted successfully!');
+					this.$toast.success('Voucher deleted successfully!');
 				}
 
 				this.showDeleteModal = false;
@@ -797,7 +797,7 @@ export default {
 				this.fetchVouchers();
 			} catch (error) {
 				console.error('Error deleting vouchers:', error);
-				this.$flash.error(error.response?.data?.message || 'Unable to delete voucher. Please try again later.');
+				this.$toast.error(error.response?.data?.message || 'Unable to delete voucher. Please try again later.');
 			} finally {
 				this.deleting = false;
 			}
@@ -815,14 +815,14 @@ export default {
 					}
 				}
 
-				this.$flash.success(`Successfully ${isActive ? 'activated' : 'deactivated'} ${this.selectedVouchers.length} vouchers!`);
+				this.$toast.success(`Successfully ${isActive ? 'activated' : 'deactivated'} ${this.selectedVouchers.length} vouchers!`);
 				this.selectedVouchers = [];
 
 				// Reload voucher list
 				this.fetchVouchers();
 			} catch (error) {
 				console.error('Error updating vouchers status:', error);
-				this.$flash.error(error.response?.data?.message || 'Unable to update voucher status. Please try again later.');
+				this.$toast.error(error.response?.data?.message || 'Unable to update voucher status. Please try again later.');
 			}
 		}
 	},

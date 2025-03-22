@@ -263,18 +263,14 @@ export default {
 				}
 			} catch (error) {
 				console.error('Error fetching products:', error);
-				// Replace $flash.error with a standard alert or vuex store for error handling
-				this.$store.dispatch('alert/setAlert', {
-					type: 'error',
-					message: 'Unable to load featured products'
-				});
+				this.$toast.error('Unable to load featured products');
 			} finally {
 				this.productsLoading = false;
 			}
 		},
 		addToCart(product) {
 			this.addToCartAction({ product, quantity: 1 });
-			this.$flash.success(`Added ${product.title} to cart!`);
+			this.$toast.success(`Added ${product.title} to cart!`);
 		}
 	},
 	mounted() {

@@ -554,7 +554,7 @@ export default {
 				}
 			} catch (error) {
 				console.error('Error fetching products:', error);
-				this.$flash.error('Unable to load product list');
+				this.$toast.error('Unable to load product list');
 			}
 		},
 		async fetchAccounts() {
@@ -581,7 +581,7 @@ export default {
 				this.applyFilters();
 			} catch (error) {
 				console.error('Error fetching accounts:', error);
-				this.$flash.error('Unable to load account list');
+				this.$toast.error('Unable to load account list');
 			} finally {
 				this.loading = false;
 			}
@@ -667,10 +667,10 @@ export default {
 		},
 		copyToClipboard(text) {
 			navigator.clipboard.writeText(text).then(() => {
-				this.$flash.success('Copied to clipboard');
+				this.$toast.success('Copied to clipboard');
 			}).catch(err => {
 				console.error('Cannot copy: ', err);
-				this.$flash.error('Unable to copy. Please try again.');
+				this.$toast.error('Unable to copy. Please try again.');
 			});
 		},
 		openAccountModal(account = null) {
@@ -742,7 +742,7 @@ export default {
 
 				if (response.data.success) {
 					this.showAccountModal = false;
-					this.$flash.success(this.editMode ? 'Account updated successfully!' : 'New account added successfully!');
+					this.$toast.success(this.editMode ? 'Account updated successfully!' : 'New account added successfully!');
 
 					// Reload account list
 					this.fetchAccounts();
@@ -824,12 +824,12 @@ export default {
 						await api.delete(`/accounts/${accountId}`);
 					}
 
-					this.$flash.success(`Successfully deleted ${this.selectedAccounts.length} accounts!`);
+					this.$toast.success(`Successfully deleted ${this.selectedAccounts.length} accounts!`);
 					this.selectedAccounts = [];
 				} else {
 					// Delete one account
 					await api.delete(`/accounts/${this.accountToDelete._id}`);
-					this.$flash.success('Account deleted successfully!');
+					this.$toast.success('Account deleted successfully!');
 				}
 
 				this.showDeleteModal = false;
@@ -838,7 +838,7 @@ export default {
 				this.fetchAccounts();
 			} catch (error) {
 				console.error('Error deleting accounts:', error);
-				this.$flash.error(error.response?.data?.message || 'Unable to delete accounts. Please try again later.');
+				this.$toast.error(error.response?.data?.message || 'Unable to delete accounts. Please try again later.');
 			} finally {
 				this.deleting = false;
 			}

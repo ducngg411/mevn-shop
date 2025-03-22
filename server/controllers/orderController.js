@@ -2,6 +2,8 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const Account = require('../models/Account');
 const Voucher = require('../models/Voucher');
+const User = require('../models/User');
+const { sendOrderConfirmationEmail } = require('../utils/emailService');
 
 // @desc    Create a new order
 // @route   POST /api/orders
@@ -129,6 +131,21 @@ const createOrder = async (req, res) => {
             });
         }
 
+        // Lấy thông tin đầy đủ của user và order để gửi email
+        const user = await User.findById(req.user._id);
+        const populatedOrder = await Order.findById(order._id)
+            .populate('orderItems.product', 'title image price discountPrice')
+            .populate('orderItems.accounts', 'username password additionalInfo');
+
+        // Gửi email xác nhận đơn hàng
+        try {
+            await sendOrderConfirmationEmail(populatedOrder, user);
+            console.log('Order confirmation email sent successfully');
+        } catch (emailError) {
+            console.error('Error sending order confirmation email:', emailError);
+            // Không trả về lỗi cho người dùng vì đơn hàng vẫn được tạo thành công
+        }
+
 		res.status(201).json({
 			success: true,
 			order,
@@ -248,6 +265,7 @@ const updateOrderStatus = async (req, res) => {
 
 		// Save old status for comparison
 		const oldStatus = order.status;
+        const oldPaymentStatus = order.paymentStatus;
 
 		// Update new status
 		if (status) order.status = status;
@@ -285,6 +303,27 @@ const updateOrderStatus = async (req, res) => {
 				}
 			}
 		}
+        
+        // Nếu trạng thái đơn hàng hoặc trạng thái thanh toán thay đổi thành completed, gửi email thông báo
+        if ((status === 'completed' && oldStatus !== 'completed') || 
+            (paymentStatus === 'completed' && oldPaymentStatus !== 'completed')) {
+            try {
+                // Lấy thông tin đầy đủ của đơn hàng và user
+                const populatedOrder = await Order.findById(order._id)
+                    .populate('user')
+                    .populate('orderItems.product', 'title image price discountPrice')
+                    .populate('orderItems.accounts', 'username password additionalInfo');
+                
+                const user = await User.findById(order.user);
+                
+                // Gửi email với thông tin tài khoản đã mua
+                await sendOrderConfirmationEmail(populatedOrder, user);
+                console.log(`Order confirmation email sent for order ${order._id} after status update`);
+            } catch (emailError) {
+                console.error('Error sending order confirmation email after status update:', emailError);
+                // Không trả về lỗi cho admin vì việc cập nhật trạng thái vẫn thành công
+            }
+        }
 
 		res.json({
 			success: true,
@@ -356,4 +395,6 @@ module.exports = {
 	getAllOrders,
 	updateOrderStatus,
     getRemainingTime,
+	sendOrderConfirmationEmail
+
 };
