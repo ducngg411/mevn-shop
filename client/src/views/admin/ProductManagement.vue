@@ -196,7 +196,7 @@
 							</div>
 							
 							<!-- Pagination -->
-							<div v-if="filteredProducts.length > 0" class="d-flex justify-content-between align-items-center mt-4">
+							<div v-if="filteredProducts.length > 0" class="d-flex justify-content-between mt-4">
 								<div class="pagination-info">
 									<span>Displaying {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ Math.min(currentPage * itemsPerPage, filteredProducts.length) }}/{{ filteredProducts.length }} products store</span>
 								</div>
@@ -1047,13 +1047,38 @@ export default {
 .form-control {
     border-radius: 8px;
     border: 1px solid #e2e8f0;
-    padding: 0.75rem 1rem;
+    /* padding: 0.75rem 1rem; */
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
     border-color: #4361ee;
     box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+}
+
+.admin-products .pagination {
+	margin-bottom: 0;
+}
+
+.admin-products .page-link {
+	border: none;
+	margin: 0 3px;
+	border-radius: 6px;
+	color: #4361ee;
+	transition: all 0.3s ease;
+}
+
+.admin-products .page-item.active .page-link {
+	background-color: #4361ee;
+	box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+}
+
+.admin-products .order-item-image {
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Custom file input */
@@ -1086,8 +1111,8 @@ export default {
 
 /* Pagination info text */
 .pagination-info {
-    color: #6c757d;
-    font-size: 0.9rem;
+    color: #212529;
+    font-size: 14px;
 }
 
 /* Button primary */

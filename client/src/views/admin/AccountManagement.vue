@@ -1017,6 +1017,7 @@ export default {
 .admin-accounts .page-item.active .page-link {
 	background-color: #4361ee;
 	box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+	color: white;
 }
 
 /* Account Form Modal */

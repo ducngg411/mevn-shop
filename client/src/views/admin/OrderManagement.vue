@@ -1045,6 +1045,7 @@ export default {
 .admin-orders .page-item.active .page-link {
 	background-color: #4361ee;
 	box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+	color: white;
 }
 
 .admin-orders .order-item-image {
@@ -1080,5 +1081,9 @@ export default {
 .modal-footer {
 	padding: 1.25rem 1.5rem;
 	border-top: 1px solid #eee;
+}
+
+pagination-info {
+	font-size: 14px;
 }
 </style>

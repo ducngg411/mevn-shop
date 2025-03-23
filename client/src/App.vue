@@ -26,16 +26,27 @@ export default {
 
 <style lang="scss">
 /* App.vue */
+// body {
+//   margin: 0;
+//   padding: 0;
+//   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+//     'Helvetica Neue', Arial, sans-serif;
+//   background-color: #f8f9fa;
+//   color: #333;
+//   font-family: "Montserrat", sans-serif;
+//   font-optical-sizing: auto;
+// }
+
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
-    'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+    'Helvetica Neue', Arial, sans-serif !important;
   background-color: #f8f9fa;
   color: #333;
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
+  line-height: 1.7;
 }
+
 
 #app {
   min-height: 100vh;

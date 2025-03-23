@@ -4,7 +4,7 @@
 			<div class="container">
 				<router-link class="navbar-brand" to="/">
 					<!-- {{ appTitle }} -->
-					<img src="/img/logo.png" alt="LisenceZone" class="site-logo">
+					<img src="/img/logo4.png" alt="LisenceZone" class="site-logo">
 				</router-link>
 				
 				<button class="navbar-toggler" type="button" data-toggle="collapse" 
@@ -230,11 +230,11 @@ header {
 
 .site-logo {
 	position: relative;
-    height: 100px;
-    margin-top: -50px;
-    margin-bottom: -50px;
+    height: 130px;
+    margin-top: -70px;
+    margin-bottom: -70px;
     transition: transform 0.3s ease;
-	left: -30px;
+	
 }
 
 .site-logo:hover {
