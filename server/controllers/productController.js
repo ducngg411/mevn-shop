@@ -9,26 +9,22 @@ const getProducts = async (req, res) => {
         const pageSize = Number(req.query.limit) || 10;
         const page = Number(req.query.pageNumber) || 1;
         
-        // Xây dựng điều kiện tìm kiếm
         const keyword = req.query.keyword
             ? { title: { $regex: req.query.keyword, $options: 'i' } }
             : {};
         
         const category = req.query.category ? { category: req.query.category } : {};
         
-        // Xử lý lọc theo giá
         let priceFilter = {};
         if (req.query.minPrice && req.query.maxPrice) {
             priceFilter = {
                 $or: [
-                    // Kiểm tra giá gốc
                     { 
                         price: { 
                             $gte: Number(req.query.minPrice), 
                             $lte: Number(req.query.maxPrice) 
                         } 
                     },
-                    // Kiểm tra giá khuyến mãi nếu có
                     { 
                         discountPrice: { 
                             $gt: 0, 
@@ -56,7 +52,7 @@ const getProducts = async (req, res) => {
             const [field, direction] = req.query.sortBy.split('_');
             sortOptions[field] = direction === 'asc' ? 1 : -1;
         } else {
-            sortOptions = { createdAt: -1 }; // Mặc định sắp xếp theo thời gian tạo giảm dần
+            sortOptions = { createdAt: -1 }; 
         }
         
         const products = await Product.find(searchConditions)

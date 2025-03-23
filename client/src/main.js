@@ -6,6 +6,7 @@ import axios from 'axios'
 import api from './utils/api'
 import VeeValidate from 'vee-validate'
 import Toast from 'vue-toastification'
+import './utils/modal-animations.js';
 
 // css imports
 import 'bootstrap/dist/css/bootstrap.min.css'

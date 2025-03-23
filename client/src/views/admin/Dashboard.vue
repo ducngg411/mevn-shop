@@ -280,55 +280,38 @@ export default {
 		async fetchStats() {
 			try {
 				this.loadingStats = true;
-				
-				// In a real environment, you need an API to fetch the stats
-				// Here, we use mock data
-				this.stats = {
-					totalOrders: 156,
-					orderGrowth: 12.5,
-					totalRevenue: 15800000,
-					revenueGrowth: 8.3,
-					totalProducts: 42,
-					availableAccounts: 357,
-					totalUsers: 89,
-					userGrowth: 5.2
-				};
-			} catch (error) {
-				console.error('Error fetching stats:', error);
-			} finally {
-				this.loadingStats = false;
-			}
-		},
-		async fetchRecentOrders() {
-			try {
 				this.loadingOrders = true;
-				
-				const response = await api.get('/orders?limit=5');
-				
-				if (response.data.success) {
-					this.recentOrders = response.data.orders.slice(0, 5);
-				}
-			} catch (error) {
-				console.error('Error fetching recent orders:', error);
-			} finally {
-				this.loadingOrders = false;
-			}
-		},
-		async fetchLowStockProducts() {
-			try {
 				this.loadingProducts = true;
 				
-				const response = await api.get('/products');
+				// Gọi API để lấy dữ liệu thống kê
+				const response = await api.get('/dashboard/stats');
 				
 				if (response.data.success) {
-					// Filter products with low stock
-					this.lowStockProducts = response.data.products
-						.filter(p => p.availableStock < 5)
-						.slice(0, 5);
+					// Cập nhật thống kê
+					const { stats } = response.data;
+					this.stats = {
+						totalOrders: stats.totalOrders,
+						orderGrowth: stats.orderGrowth,
+						totalRevenue: stats.totalRevenue,
+						revenueGrowth: stats.revenueGrowth,
+						totalProducts: stats.totalProducts,
+						availableAccounts: stats.availableAccounts,
+						totalUsers: stats.totalUsers,
+						userGrowth: stats.userGrowth
+					};
+					
+					// Cập nhật đơn hàng gần đây
+					this.recentOrders = stats.recentOrders;
+					
+					// Cập nhật sản phẩm sắp hết hàng
+					this.lowStockProducts = stats.lowStockProducts;
 				}
 			} catch (error) {
-				console.error('Error fetching low stock products:', error);
+				console.error('Error fetching stats:', error);
+				this.$toast.error('Không thể tải dữ liệu thống kê');
 			} finally {
+				this.loadingStats = false;
+				this.loadingOrders = false;
 				this.loadingProducts = false;
 			}
 		}
@@ -340,21 +323,111 @@ export default {
 		}
 		
 		this.fetchStats();
-		this.fetchRecentOrders();
-		this.fetchLowStockProducts();
 	}
 };
 </script>
 
 <style scoped>
-.admin-dashboard i.massive {
-	font-size: 2rem;
-	opacity: 0.5;
+.admin-dashboard .card {
+	border: none;
+	border-radius: 12px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+	transition: all 0.3s ease;
+	overflow: hidden;
 }
 
-.card-body i.massive {
+.admin-dashboard .card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.admin-dashboard .card-body {
+	position: relative;
+	padding: 1.5rem;
+}
+
+.admin-dashboard .text-white {
+	position: relative;
+	z-index: 2;
+}
+
+.admin-dashboard .card-title {
+	font-size: 1.1rem;
+	font-weight: 700;
+	margin-bottom: 0.75rem;
+}
+
+.admin-dashboard .display-4 {
+	font-size: 2.5rem;
+	font-weight: 800;
+	margin-bottom: 0.5rem;
+}
+
+.admin-dashboard i.massive.icon {
+	font-size: 4rem;
+	opacity: 0.3;
 	position: absolute;
-	right: 10px;
-	top: 10px;
+	right: 15px;
+	top: 15px;
+	z-index: 1;
+}
+
+.admin-dashboard .bg-primary {
+	background: linear-gradient(135deg, #4361ee, #3a0ca3) !important;
+}
+
+.admin-dashboard .bg-success {
+	background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+}
+
+.admin-dashboard .bg-info {
+	background: linear-gradient(135deg, #3498db, #2980b9) !important;
+}
+
+.admin-dashboard .bg-warning {
+	background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+}
+
+.admin-dashboard .card-text {
+	opacity: 0.8;
+	font-size: 0.9rem;
+}
+
+/* Recent Orders Table */
+.admin-dashboard .table {
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.admin-dashboard .table thead th {
+	background-color: #f8f9fa;
+	border-top: none;
+	border-bottom: 2px solid #dee2e6;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 1px;
+	padding: 12px;
+}
+
+.admin-dashboard .table tbody td {
+	padding: 12px;
+	vertical-align: middle;
+	border-color: #f0f0f0;
+}
+
+.admin-dashboard .table-hover tbody tr:hover {
+	background-color: rgba(67, 97, 238, 0.03);
+}
+
+.admin-dashboard .btn-outline-primary {
+	border-color: #4361ee;
+	color: #4361ee;
+	transition: all 0.3s;
+}
+
+.admin-dashboard .btn-outline-primary:hover {
+	background-color: #4361ee;
+	color: white;
 }
 </style>

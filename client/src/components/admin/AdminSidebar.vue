@@ -2,7 +2,7 @@
 	<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
 		<div class="sidebar-sticky pt-3">
 			<div class="text-center mb-4">
-				<h5 class="mb-0">MEVN Shop</h5>
+				<h5 class="mb-0">LisenceZone</h5>
 				<div class="text-muted small">System Administration</div>
 			</div>
 			
@@ -91,48 +91,77 @@ export default {
 
 <style scoped>
 .sidebar {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 100;
-	padding: 48px 0 0;
-	box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+	background: linear-gradient(180deg, #2c3e50, #1a202c);
+	height: 100vh;
+	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	transition: all 0.3s ease;
 }
 
 .sidebar-sticky {
-	position: relative;
-	top: 0;
+	padding-top: 1rem;
 	height: calc(100vh - 48px);
-	padding-top: .5rem;
-	overflow-x: hidden;
-	overflow-y: auto;
 }
 
 .sidebar .nav-link {
-	font-weight: 500;
-	color: #333;
-	padding: .75rem 1rem;
+	border-radius: 8px;
+	margin: 5px 10px;
+	transition: all 0.3s ease;
+	font-weight: 600;
+	color: rgba(255, 255, 255, 0.8);
+	padding: 0.85rem 1rem;
+}
+
+.sidebar .nav-link:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+	color: white;
+	transform: translateX(5px);
+}
+
+.sidebar .nav-link.active {
+	background-color: #4361ee;
+	color: white;
+	box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
 }
 
 .sidebar .nav-link i {
 	margin-right: 10px;
+	font-size: 1.1rem;
+	width: 24px;
+	text-align: center;
+	transition: all 0.3s ease;
 }
 
-.sidebar .nav-link.active {
-	color: #007bff;
+.sidebar .nav-link:hover i {
+	transform: scale(1.2);
+}
+
+/* Sidebar Brand/Logo area */
+.sidebar-sticky > div:first-child {
+	padding: 1.5rem 1rem;
+	background: rgba(0, 0, 0, 0.2);
+	margin-bottom: 1.5rem;
+	border-radius: 0 0 8px 8px;
+}
+
+.sidebar-sticky h5 {
+	font-weight: 800;
+	letter-spacing: 1px;
+	color: white;
+	margin-bottom: 5px;
+}
+
+.sidebar-sticky .text-muted {
+	color: rgba(255, 255, 255, 0.6) !important;
+	font-size: 0.9rem;
 }
 
 .sidebar-heading {
-	font-size: .75rem;
+	font-size: 0.8rem;
 	text-transform: uppercase;
-}
-
-@media (max-width: 767.98px) {
-	.sidebar {
-		position: static;
-		height: auto;
-		padding-top: 0;
-	}
+	letter-spacing: 1px;
+	color: rgba(255, 255, 255, 0.4);
+	padding: 0.75rem 1rem;
+	margin-top: 1rem;
 }
 </style>

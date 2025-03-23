@@ -897,41 +897,188 @@ export default {
 </script>
 
 <style scoped>
-.modal-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1050;
+.admin-orders .card {
+	border: none;
+	border-radius: 12px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+	transition: all 0.3s ease;
 }
 
-.modal-dialog {
-	width: 100%;
-	max-width: 500px;
-	margin: 0 auto;
+.admin-orders .card-body {
+	padding: 1.5rem;
 }
 
-.modal-lg {
-	max-width: 800px;
+.admin-orders .input-group {
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+	border-radius: 8px;
+	overflow: hidden;
 }
 
-.bulk-actions {
-	position: sticky;
-	bottom: 0;
+.admin-orders .input-group .form-control {
+	border: none;
+	padding: 0.75rem 1rem;
+}
+
+.admin-orders .input-group-append .btn {
+	border: none;
 	background-color: #f8f9fa;
-	border-top: 1px solid #ddd;
-	border-radius: 0 0 0.25rem 0.25rem;
+	color: #4361ee;
+	padding: 0.75rem 1.25rem;
 }
 
-.order-item-image {
-	width: 40px;
-	height: 40px;
+.admin-orders select.form-control {
+	height: calc(2.5rem + 2px);
+	border-radius: 8px;
+	border: 1px solid #e2e8f0;
+	background-color: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.admin-orders input[type="date"] {
+	border-radius: 8px;
+	border: 1px solid #e2e8f0;
+	height: calc(2.5rem + 2px);
+	padding: 0.75rem 1rem;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.admin-orders .table {
+	margin-bottom: 0;
+	border-collapse: separate;
+	border-spacing: 0 5px;
+}
+
+.admin-orders .table thead th {
+	background-color: #f8f9fa;
+	border: none;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 1px;
+	padding: 12px;
+	color: #64748b;
+}
+
+.admin-orders .table tbody tr {
+	background-color: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+	border-radius: 8px;
+	transition: all 0.3s ease;
+}
+
+.admin-orders .table tbody tr:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.admin-orders .table tbody td {
+	padding: 15px 12px;
+	vertical-align: middle;
+	border-top: none;
+}
+
+.admin-orders .table tbody td:first-child {
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+.admin-orders .table tbody td:last-child {
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.admin-orders .badge {
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 0.4em 0.8em;
+	border-radius: 30px;
+}
+
+.admin-orders .badge-success {
+	background-color: #10b981;
+	color: white;
+}
+
+.admin-orders .badge-warning {
+	background-color: #f59e0b;
+	color: white;
+}
+
+.admin-orders .badge-danger {
+	background-color: #ef4444;
+	color: white;
+}
+
+.admin-orders .btn-group .btn {
+	border-radius: 6px;
+	margin: 0 2px;
+	transition: all 0.3s ease;
+}
+
+.admin-orders .btn-outline-primary {
+	border-color: #4361ee;
+	color: #4361ee;
+}
+
+.admin-orders .btn-outline-success {
+	border-color: #10b981;
+	color: #10b981;
+}
+
+.admin-orders .btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-orders .pagination {
+	margin-bottom: 0;
+}
+
+.admin-orders .page-link {
+	border: none;
+	margin: 0 3px;
+	border-radius: 6px;
+	color: #4361ee;
+	transition: all 0.3s ease;
+}
+
+.admin-orders .page-item.active .page-link {
+	background-color: #4361ee;
+	box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+}
+
+.admin-orders .order-item-image {
+	width: 50px;
+	height: 50px;
 	object-fit: cover;
-	border-radius: 4px;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal styles */
+.modal-overlay {
+	background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+	border: none;
+	border-radius: 12px;
+	box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+	background-color: #4361ee;
+	color: white;
+	border-radius: 12px 12px 0 0;
+	padding: 1.25rem 1.5rem;
+}
+
+.modal-body {
+	padding: 1.5rem;
+}
+
+.modal-footer {
+	padding: 1.25rem 1.5rem;
+	border-top: 1px solid #eee;
 }
 </style>

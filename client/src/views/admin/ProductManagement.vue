@@ -196,27 +196,33 @@
 							</div>
 							
 							<!-- Pagination -->
-							<div v-if="filteredProducts.length > itemsPerPage" class="d-flex justify-content-center mt-4">
-								<ul class="pagination">
+							<div v-if="filteredProducts.length > 0" class="d-flex justify-content-between align-items-center mt-4">
+								<div class="pagination-info">
+									<span>Displaying {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ Math.min(currentPage * itemsPerPage, filteredProducts.length) }}/{{ filteredProducts.length }} products store</span>
+								</div>
+								
+								<nav aria-label="Product pagination">
+									<ul class="pagination">
+									<!-- Nút Previous -->
 									<li class="page-item" :class="{ 'disabled': currentPage === 1 }">
-										<a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">
-											<i class="chevron left icon"></i>
-										</a>
+										<button class="page-link" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
+										<i class="chevron left icon"></i>
+										</button>
 									</li>
-									<li 
-										v-for="page in totalPages" 
-										:key="page" 
-										class="page-item"
-										:class="{ 'active': currentPage === page }"
-									>
-										<a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
+									
+									<!-- Các số trang -->
+									<li v-for="page in totalPages" :key="page" class="page-item" :class="{ 'active': currentPage === page }">
+										<button class="page-link" @click="changePage(page)">{{ page }}</button>
 									</li>
+									
+									<!-- Nút Next -->
 									<li class="page-item" :class="{ 'disabled': currentPage === totalPages }">
-										<a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">
-											<i class="chevron right icon"></i>
-										</a>
+										<button class="page-link" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
+										<i class="chevron right icon"></i>
+										</button>
 									</li>
-								</ul>
+									</ul>
+								</nav>
 							</div>
 						</div>
 					</div>
@@ -489,43 +495,69 @@ export default {
 			isAdmin: 'auth/isAdmin'
 		}),
 		totalPages() {
-			return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
+
+			return Math.max(1, Math.ceil(this.filteredProducts.length / this.itemsPerPage));
 		},
 		paginatedProducts() {
 			const start = (this.currentPage - 1) * this.itemsPerPage;
-			const end = start + this.itemsPerPage;
-			return this.filteredProducts.slice(start, end);
+		const end = start + this.itemsPerPage;
+		console.log(`Current page: ${this.currentPage}, showing items from ${start} to ${end-1}`);
+		return this.filteredProducts.slice(start, end);
+		},
 		},
 		isValidPrice() {
 			return this.productForm.price && this.productForm.price > 0;
 		},
 		isValidDiscountPrice() {
 			return !this.productForm.discountPrice || 
-				   (this.productForm.discountPrice >= 0 && 
+				(this.productForm.discountPrice >= 0 && 
 					this.productForm.discountPrice <= this.productForm.price);
-		}
+		},
+		displayedPages() {
+			// Logic to show limited page numbers with ellipsis
+			const totalVisiblePages = 5;
+			if (this.totalPages <= totalVisiblePages) {
+				// If we have few pages, show all of them
+				return [...Array(this.totalPages).keys()].map(x => x + 1);
+			}
+			
+			// Always show first page, last page, current page, and some neighbors
+			let startPage = Math.max(1, this.currentPage - Math.floor(totalVisiblePages / 2));
+			let endPage = startPage + totalVisiblePages - 1;
+			
+			// Adjust if we're near the end
+			if (endPage > this.totalPages) {
+				endPage = this.totalPages;
+				startPage = Math.max(1, endPage - totalVisiblePages + 1);
+			}
+			
+			// Generate the array of pages
+			return [...Array(endPage - startPage + 1).keys()].map(x => x + startPage);
+
 	},
 	methods: {
 		formatCurrency,
 		formatDate,
 		formatImageUrl,
-		async fetchProducts() {
-			try {
-				this.loading = true;
-				
-				const response = await api.get('/products');
-				
-				if (response.data.success) {
-					this.products = response.data.products;
-					this.applyFilters();
-				}
-			} catch (error) {
-				console.error('Error fetching products:', error);
-				this.$toast.error('Unable to load product list');
-			} finally {
-				this.loading = false;
+			async fetchProducts() {
+				try {
+			this.loading = true;
+			
+			// Nếu có 30 sản phẩm nhưng API chỉ trả về 10, bạn cần thay đổi limit
+			const response = await api.get('/products?limit=100'); // Tăng limit lên
+			
+			if (response.data.success) {
+				console.log("Total products from API:", response.data.products.length);
+				this.products = response.data.products;
+				this.applyFilters();
 			}
-		},
+		} catch (error) {
+			console.error('Error fetching products:', error);
+			this.$toast.error('Unable to load product list');
+		} finally {
+			this.loading = false;
+		}
+	},
 		searchProducts() {
 			this.currentPage = 1;
 			this.applyFilters();
@@ -603,6 +635,7 @@ export default {
 				return;
 			}
 			this.currentPage = page;
+			
 		},
 		toggleSelectAll() {
 			if (this.selectAll) {
@@ -818,42 +851,257 @@ export default {
 </script>
 
 <style scoped>
-.product-thumbnail {
-	width: 40px;
-	height: 40px;
-	object-fit: cover;
-	border-radius: 4px;
+.admin-products .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
 }
 
+.admin-products .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.admin-products .card-body {
+    padding: 1.5rem;
+}
+
+.admin-products .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.25rem 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.admin-products .table {
+    margin-bottom: 0;
+}
+
+.admin-products .table thead th {
+    background-color: #f8f9fa;
+    border-top: none;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    padding: 15px 12px;
+    color: #4a5568;
+}
+
+.admin-products .table-hover tbody tr {
+    transition: all 0.3s ease;
+}
+
+.admin-products .table-hover tbody tr:hover {
+    background-color: rgba(67, 97, 238, 0.03);
+}
+
+.admin-products .table td {
+    padding: 15px 12px;
+    vertical-align: middle;
+    border-top: 1px solid #f1f3f5;
+}
+
+.admin-products .product-thumbnail {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.admin-products tr:hover .product-thumbnail {
+    transform: scale(1.1);
+}
+
+.admin-products .btn-group .btn {
+    border-radius: 6px;
+    margin: 0 2px;
+    transition: all 0.3s ease;
+}
+
+.admin-products .btn-outline-primary {
+    border-color: #4361ee;
+    color: #4361ee;
+}
+
+.admin-products .btn-outline-info {
+    border-color: #3498db;
+    color: #3498db;
+}
+
+.admin-products .btn-outline-danger {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.admin-products .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-products .badge {
+    font-size: 0.75rem;
+    padding: 0.4em 0.8em;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+.admin-products .badge-success {
+    background-color: #2ecc71;
+}
+
+.admin-products .badge-warning {
+    background-color: #f39c12;
+}
+
+.admin-products .badge-danger {
+    background-color: #e74c3c;
+}
+
+/* Pagination styles */
+.admin-products .pagination {
+    margin-bottom: 0;
+}
+
+.admin-products .pagination .page-item .page-link {
+    color: #4361ee;
+    border-radius: 6px;
+    margin: 0 3px;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.admin-products .pagination .page-item.active .page-link {
+    background-color: #4361ee;
+    border-color: #4361ee;
+    color: white;
+    box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+}
+
+.admin-products .pagination .page-item .page-link:hover {
+    background-color: #f0f2ff;
+    transform: translateY(-2px);
+}
+
+.admin-products .pagination .page-item.disabled .page-link {
+    color: #adb5bd;
+    pointer-events: none;
+}
+
+/* Modal styles */
 .modal-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1050;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
 }
 
 .modal-dialog {
-	width: 100%;
-	max-width: 500px;
-	margin: 0 auto;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-.modal-lg {
-	max-width: 800px;
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
 }
 
+.modal-header {
+    background-color: #4361ee;
+    color: white;
+    border-bottom: none;
+    padding: 1.25rem 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid #f1f3f5;
+    background-color: #f8f9fa;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #4361ee;
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+}
+
+/* Custom file input */
+.custom-file-label {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+.custom-file-label::after {
+    height: 100%;
+    border-radius: 0 8px 8px 0;
+    background-color: #f8f9fa;
+    color: #4a5568;
+}
+
+/* Bulk actions bar */
 .bulk-actions {
-	position: sticky;
-	bottom: 0;
-	background-color: #f8f9fa;
-	border-top: 1px solid #ddd;
-	border-radius: 0 0 0.25rem 0.25rem;
+    background-color: rgba(67, 97, 238, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(67, 97, 238, 0.1);
+    padding: 1rem !important;
+    margin-top: 1rem;
+}
+
+/* Add animation for loading */
+.ui.active.loader {
+    margin-bottom: 1rem;
+}
+
+/* Pagination info text */
+.pagination-info {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Button primary */
+.btn-primary {
+    background-color: #4361ee;
+    border-color: #4361ee;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #3a56d4;
+    border-color: #3a56d4;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
 }
 </style>
 		

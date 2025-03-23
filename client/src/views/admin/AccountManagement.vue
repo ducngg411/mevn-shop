@@ -570,7 +570,6 @@ export default {
 						this.accounts = response.data.accounts;
 					}
 				} else {
-					// Get all accounts (note: backend should support pagination)
 					const response = await api.get('/accounts');
 
 					if (response.data.success) {
@@ -863,39 +862,210 @@ export default {
 </script>
 
 <style scoped>
-.modal-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5);
+.admin-accounts .card {
+	border: none;
+	border-radius: 12px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+	transition: all 0.3s ease;
+}
+
+.admin-accounts .card-body {
+	padding: 1.5rem;
+}
+
+.admin-accounts .input-group {
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.admin-accounts .input-group .form-control {
+	border: none;
+	padding: 0.75rem 1rem;
+}
+
+.admin-accounts .input-group-append .btn {
+	border: none;
+	background-color: #f8f9fa;
+	color: #4361ee;
+	padding: 0.75rem 1.25rem;
+}
+
+.admin-accounts select.form-control {
+	height: calc(2.5rem + 2px);
+	border-radius: 8px;
+	border: 1px solid #e2e8f0;
+	background-color: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.admin-accounts .table {
+	margin-bottom: 0;
+	border-collapse: separate;
+	border-spacing: 0 5px;
+}
+
+.admin-accounts .table thead th {
+	background-color: #f8f9fa;
+	border: none;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 1px;
+	padding: 12px;
+	color: #64748b;
+}
+
+.admin-accounts .table tbody tr {
+	background-color: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+	border-radius: 8px;
+	transition: all 0.3s ease;
+}
+
+.admin-accounts .table tbody tr:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.admin-accounts .table tbody td {
+	padding: 15px 12px;
+	vertical-align: middle;
+	border-top: none;
+}
+
+.admin-accounts .table tbody td:first-child {
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+.admin-accounts .table tbody td:last-child {
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.admin-accounts .badge {
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 0.4em 0.8em;
+	border-radius: 30px;
+}
+
+.admin-accounts .badge-success {
+	background-color: #10b981;
+	color: white;
+}
+
+.admin-accounts .badge-secondary {
+	background-color: #64748b;
+	color: white;
+}
+
+.admin-accounts .password-field {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	z-index: 1050;
+	background-color: #f8f9fa;
+	border-radius: 6px;
+	padding: 0.25rem 0.5rem;
+	font-family: 'Courier New', monospace;
+}
+
+.admin-accounts .password-field .btn {
+	padding: 0.25rem;
+	color: #64748b;
+	transition: all 0.3s ease;
+}
+
+.admin-accounts .password-field .btn:hover {
+	color: #4361ee;
+	transform: scale(1.2);
+}
+
+.admin-accounts .btn-group .btn {
+	border-radius: 6px;
+	margin: 0 2px;
+	transition: all 0.3s ease;
+}
+
+.admin-accounts .btn-outline-primary {
+	border-color: #4361ee;
+	color: #4361ee;
+}
+
+.admin-accounts .btn-outline-danger {
+	border-color: #ef4444;
+	color: #ef4444;
+}
+
+.admin-accounts .btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-accounts .pagination {
+	margin-bottom: 0;
+}
+
+.admin-accounts .page-link {
+	border: none;
+	margin: 0 3px;
+	border-radius: 6px;
+	color: #4361ee;
+	transition: all 0.3s ease;
+}
+
+.admin-accounts .page-item.active .page-link {
+	background-color: #4361ee;
+	box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+}
+
+/* Account Form Modal */
+.modal-overlay {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .modal-dialog {
-	width: 100%;
-	max-width: 500px;
-	margin: 0 auto;
+  margin: 0 auto;
+  max-width: 550px;
+  width: 100%;
 }
 
 .modal-lg {
-	max-width: 800px;
+  max-width: 800px;
 }
 
-.bulk-actions {
-	position: sticky;
-	bottom: 0;
-	background-color: #f8f9fa;
-	border-top: 1px solid #ddd;
-	border-radius: 0 0 0.25rem 0.25rem;
+.modal-content {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-.password-field {
-	display: flex;
-	align-items: center;
+.modal-header {
+  background: linear-gradient(135deg, #4361ee, #3a56d4);
+  color: white;
+  padding: 1.5rem;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.modal-body {
+  padding: 1.75rem;
+}
+
+.modal-footer {
+  padding: 1.25rem 1.75rem;
+  background-color: #f8fafc;
+}
+
+/* Bulk import styles */
+.admin-accounts #bulkAccounts {
+	font-family: 'Courier New', monospace;
+	font-size: 0.9rem;
 }
 </style>
