@@ -302,58 +302,116 @@ export default {
 </script>
 
 <style scoped>
+.cart {
+    padding: 3rem 0;
+}
+
+.empty-cart {
+    padding: 5rem 0;
+}
+
+.empty-cart i {
+    font-size: 5rem;
+    color: #e9ecef;
+    margin-bottom: 1.5rem;
+}
+
+.empty-cart h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
 .cart-item {
-    position: relative;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
 }
 
-.cart-item:last-child {
-    border-bottom: none !important;
+.cart-item:hover {
+    background: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transform: translateY(-5px);
 }
 
-.quantity-selector input {
-    max-width: 60px;
+.cart-item img {
+    border-radius: 8px;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.cart-item h5 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
 }
 
 .item-subtotal {
-    font-weight: bold;
-    color: #333;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #f72585;
 }
 
-.confirm-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.order-summary {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.confirm-modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+.order-summary h4 {
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.order-summary .d-flex {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.order-summary .font-weight-bold {
+    font-weight: 700;
+}
+
+.voucher-section {
+    margin: 1.5rem 0;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #4cc9f0, #4361ee);
+    border: none;
+    padding: 1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.btn-success:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(76, 201, 240, 0.3);
 }
 
 .confirm-modal-content {
-    width: 400px;
-    max-width: 90%;
-    z-index: 1;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
-.bi-credit-card {
-    margin-right: 5px;
-    margin-bottom: 2px;
+.card-header {
+    background: #4361ee;
+    color: white;
+    font-weight: 700;
 }
 
-@media (max-width: 767px) {
-    .cart-item {
-        padding-bottom: 15px;
-    }
+.card-footer {
+    background: #f8f9fa;
+}
+
+.btn-outline-primary, .btn-outline-danger {
+    font-weight: 600;
+    border-radius: 6px;
 }
 </style>

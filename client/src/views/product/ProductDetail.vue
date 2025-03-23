@@ -392,193 +392,234 @@ export default {
 
 <style scoped>
 .product-detail {
-    padding-bottom: 40px;
+    padding-bottom: 4rem;
 }
 
-.page-content {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    padding: 20px;
+.breadcrumb {
+    background: transparent;
+    padding: 1rem 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    font-size: 1.2rem;
+}
+
+.breadcrumb-item a {
+    color: #4361ee;
+    font-weight: 500;
+}
+
+.product-image {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.product-image img {
+    width: 100%;
+    transition: transform 0.5s;
+}
+
+.product-image:hover img {
+    transform: scale(1.05);
 }
 
 .product-title {
-    font-size: 2rem;
-    color: #333;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.product-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.badge-primary {
+    background-color: #4361ee;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 20px;
 }
 
 .product-price {
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 2rem;
 }
 
 .original-price {
     text-decoration: line-through;
-    color: #777;
-    font-size: 1rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+    display: block;
 }
 
 .current-price {
-    font-weight: bold;
-    color: #e74c3c;
-    font-size: 1.8rem;
+    font-weight: 800;
+    color: #f72585;
+    font-size: 2rem;
 }
 
-.review-item {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 15px;
+.product-stock {
+    margin-bottom: 2rem;
+    font-size: 1rem;
 }
 
-.review-item:last-child {
-    border-bottom: none;
-}
-
-.review-avatar i {
-    color: #ccc;
-}
-
-.review-rating i {
-    font-size: 1.2rem;
-}
-
-.rating-selector i {
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.rating-selector i:hover {
-    color: #f1c40f;
-}
-
-.review-content p {
-    font-size: 1.1rem;
-}
-
-.btn-primary {
-    background-color: #3498db;
-    border-color: #3498db;
-}
-
-.btn-primary:hover {
-    background-color: #2980b9;
-    border-color: #2980b9;
-}
-
-.btn-outline-secondary {
-    border-color: #ccc;
-    color: #333;
-}
-
-.btn-outline-secondary:hover {
-    background-color: #f8f9fa;
-    border-color: #ccc;
-    color: #333;
-}
-
-.btn-success {
-    background-color: #2ecc71;
-    border-color: #2ecc71;
-}
-
-.btn-success:hover {
-    background-color: #27ae60;
-    border-color: #27ae60;
+.text-success {
+    font-weight: 600;
 }
 
 .quantity-selector {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
+    margin-bottom: 2rem;
 }
 
 .quantity-selector label {
-    margin-bottom: 0;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
 }
 
-.quantity-selector input {
-    max-width: 60px;
-    text-align: center;
+.input-group {
+    width: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #4cc9f0, #4361ee);
+    border: none;
+    transition: all 0.3s;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #3db8df, #3a56d4);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(76, 201, 240, 0.3);
+}
+
+.nav-tabs {
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 2rem;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    color: #6c757d;
+    position: relative;
+}
+
+.nav-tabs .nav-link.active {
+    color: #4361ee;
+    background: transparent;
+}
+
+.nav-tabs .nav-link:after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #4361ee;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.nav-tabs .nav-link.active:after {
+    opacity: 1;
+}
+
+.tab-content {
+    padding: 2rem;
+    background: white;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.product-description h4,
+.product-reviews h4 {
+    margin-bottom: 1.5rem;
+    color: #2d3748;
+}
+
+.review-item {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    transition: transform 0.3s;
+}
+
+.review-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.review-avatar i {
+    font-size: 2.5rem;
+    color: #6c757d;
+}
+
+.review-author h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+
+.review-date {
+    font-size: 0.85rem;
+}
+
+.star.icon {
+    color: #ccc;
+    font-size: 1.2rem;
+}
+
+.star.icon.text-warning {
+    color: #ffc107;
+}
+
+.rating-selector i {
+    font-size: 2rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.rating-selector i:hover {
+    transform: scale(1.2);
+}
+
+.related-products {
+    padding: 3rem 0;
 }
 
 .related-products h3 {
+    font-weight: 800;
+    margin-bottom: 2rem;
     font-size: 1.8rem;
-    color: #333;
+    position: relative;
 }
 
-.related-products .product-card {
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.related-products .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-.related-products .card-img-top {
-    height: 180px;
-    object-fit: cover;
-}
-
-.related-products .card-title {
-    color: #333;
-    transition: color 0.3s;
-}
-
-.related-products a:hover .card-title {
-    color: #3498db;
-}
-
-.related-products .product-price {
-    display: flex;
-    flex-direction: column;
-}
-
-.related-products .original-price {
-    text-decoration: line-through;
-    color: #777;
-    font-size: 0.9rem;
-}
-
-.related-products .current-price {
-    font-weight: bold;
-    color: #e74c3c;
-    font-size: 1.1rem;
-}
-
-.related-products .btn-outline-primary {
-    border-color: #3498db;
-    color: #3498db;
-}
-
-.related-products .btn-outline-primary:hover {
-    background-color: #3498db;
-    color: white;
-}
-
-.related-products .btn-primary {
-    background-color: #3498db;
-    border-color: #3498db;
-}
-
-.related-products .btn-primary:hover {
-    background-color: #2980b9;
-    border-color: #2980b9;
-}
-
-.related-products .card {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-}
-
-.related-products .card:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
-}
-
-.bi-credit-card-fill {
-    margin-right: 5px;
-    margin-bottom: 3px;
+.related-products h3:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50px;
+    height: 4px;
+    background: #4361ee;
+    border-radius: 2px;
 }
 
 </style>

@@ -150,7 +150,7 @@
 					<div class="col-md-4 mb-4">
 						<div class="feature text-center">
 							<div class="feature-icon mb-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill=#0d6efd class="bi bi-headset" viewBox="0 0 16 16">
+		                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill=#0d6efd class="bi bi-headset" viewBox="0 0 16 16">
   <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5"/>
 </svg>
 								<!-- <i class="huge bi-headset icon text-primary"></i> -->
@@ -287,73 +287,104 @@ export default {
 </script>
 
 <style scoped>
+
+/* Home.vue */
 .hero-section {
 	margin-top: -20px;
+	margin-bottom: 4rem;
 }
 
 .carousel-item {
-	height: 450px;
+	height: 500px;
+	position: relative;
 }
 
 .carousel-item img {
 	object-fit: cover;
 	height: 100%;
-}
-
-.carousel-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.4);
-	z-index: 1;
+	filter: brightness(0.85);
 }
 
 .carousel-caption {
 	z-index: 2;
 	top: 50%;
-	transform: translateY(-50%);
+	/* transform: translateY(-50%); */
 	bottom: auto;
+	/* background: rgba(0, 0, 0, 0.4); */
+	padding: 2rem;
+	border-radius: 12px;
+	max-width: 600px;
+	margin: 0 auto;
+	/* backdrop-filter: blur(5px); */
 }
 
-.section-title {
-	position: relative;
+.carousel-caption h1 {
+	font-size: 2.5rem;
+	font-weight: 800;
+	margin-bottom: 1rem;
+	color: white;
+	text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-caption p {
+	font-size: 1.2rem;
+	margin-bottom: 1.5rem;
+}
+
+.carousel-caption .btn-primary {
+	border-radius: 30px;
+	padding: 10px 25px;
+	font-size: 1.1rem;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.featured-categories {
+	padding: 3rem 0;
+}
+
+.category-card {
+	padding: 2rem;
+	text-align: center;
+	border-radius: 12px;
+	background: white;
+	height: 100%;
+}
+
+.category-icon i {
+	font-size: 3rem;
+	color: #4361ee;
+	margin-bottom: 1.5rem;
 	display: inline-block;
-	padding-bottom: 15px;
-	margin-bottom: 30px;
+	transition: transform 0.3s;
 }
 
-.section-title::after {
-	content: '';
-	position: absolute;
-	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 80px;
-	height: 3px;
-	background-color: #3498db;
+.category-card:hover .category-icon i {
+	transform: scale(1.2) rotate(10deg);
 }
 
-.category-card,
+.category-card h5 {
+	font-size: 1.4rem;
+	margin-bottom: 1rem;
+	font-weight: 700;
+}
+
 .product-card {
-	transition: transform 0.3s, box-shadow 0.3s;
+	overflow: hidden;
+	border-radius: 12px;
 }
 
-.category-card:hover,
-.product-card:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+.product-card img {
+	transition: transform 0.5s;
 }
 
-.category-icon i,
-.feature-icon i {
-	color: #3498db;
+.product-card:hover img {
+	transform: scale(1.05);
 }
 
 .product-price {
 	display: flex;
 	flex-direction: column;
+	margin: 15px 0;
 }
 
 .original-price {
@@ -363,47 +394,37 @@ export default {
 }
 
 .current-price {
-	font-weight: bold;
-	color: #e74c3c;
-	font-size: 1.1rem;
+	font-weight: 800;
+	color: #f72585;
+	font-size: 1.3rem;
 }
 
-.testimonial-avatar {
-	width: 50px;
-	height: 50px;
+.why-choose-us {
+	background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+	padding: 5rem 0;
+	margin: 5rem 0;
+	border-radius: 30px;
+}
+
+.feature-icon i {
+	font-size: 3.5rem;
+	color: #4361ee;
+	/* background: white; */
+	padding: 20px;
 	border-radius: 50%;
-	object-fit: cover;
+	/* margin-bottom: 1.5rem; */
+	/* box-shadow: 0 10px 30px rgba(67, 97, 238, 0.1); */
+	/* transition: all 0.3s; */
 }
 
-.testimonial-text {
-	position: relative;
-	padding-left: 20px;
-}
+/* .feature:hover .feature-icon i {
+	transform: translateY(-10px);
+	box-shadow: 0 15px 30px rgba(67, 97, 238, 0.2);
+} */
 
-.testimonial-text::before {
-	content: '"';
-	font-size: 2rem;
-	color: #ddd;
-	position: absolute;
-	left: 0;
-	top: -10px;
-}
-
-.testimonial-rating i {
-	color: #f39c12;
-}
-
-@media (max-width: 768px) {
-	.carousel-item {
-		height: 350px;
-	}
-
-    .carousel-caption h1 {
-        font-size: 1.8rem;
-    }
-    
-    .carousel-caption p {
-        font-size: 1rem;
-    }
+.feature h5 {
+	font-size: 1.3rem;
+	margin-bottom: 1rem;
+	color: #2d3748;
 }
 </style>
