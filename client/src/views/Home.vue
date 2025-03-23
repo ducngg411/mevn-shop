@@ -96,6 +96,10 @@
 					<template v-else>
 						<div class="col-md-3 mb-4" v-for="product in products" :key="product._id">
 							<div class="card h-100 product-card">
+								<div class="product-rating-badge">
+									<span>{{ displayRating(product) }} <i class="star icon"></i></span>
+									<span class="review-count" v-if="product.reviews && product.reviews.length > 0">({{ product.reviews.length }})</span>
+								</div>
 								<!-- <img :src="product.image || 'https://picsum.photos/300/200'" class="card-img-top" :alt="product.title"> -->
 								<img :src="formatImageUrl(product.image)" class="card-img-top" :alt="product.title">
 								<div class="card-body d-flex flex-column">
@@ -104,6 +108,19 @@
 									<div class="product-price mb-2">
 										<span v-if="product.discountPrice > 0" class="original-price">{{ formatCurrency(product.price) }}</span>
 										<span class="current-price">{{ formatCurrency(product.discountPrice > 0 ? product.discountPrice : product.price) }}</span>
+									</div>
+									<div class="product-stock text-muted small mb-2 d-flex justify-content-between">
+										<span v-if="product.availableStock > 0">
+											<i class="check circle icon text-success"></i> {{ product.availableStock }} in stock
+										</span>
+										<span v-else class="text-danger">
+											<i class="times circle icon"></i> Out of stock
+										</span>
+										
+										<!-- Sold count -->
+										<span v-if="product.sold" class="product-sold">
+											{{ product.sold }} sold
+										</span>
 									</div>
 									<div class="d-flex justify-content-between">
 										<router-link :to="`/products/${product._id}`" class="btn btn-outline-primary">
@@ -271,7 +288,26 @@ export default {
 		addToCart(product) {
 			this.addToCartAction({ product, quantity: 1 });
 			this.$toast.success(`Added ${product.title} to cart!`);
-		}
+		},
+
+		displayRating(product) {
+			try {
+				if (product.rating) {
+					return parseFloat(product.rating).toFixed(1);
+				}
+				
+				if (product.reviews && product.reviews.length > 0) {
+					const totalRating = product.reviews.reduce((sum, review) => sum + review.rating, 0);
+					const averageRating = totalRating / product.reviews.length;
+					return averageRating.toFixed(1);
+				}
+				
+				return '0.0';
+			} catch (error) {
+				console.error('Error calculating rating:', error);
+				return '0.0';
+			}
+		},
 	},
 	mounted() {
 		this.fetchFeaturedProducts();
@@ -426,5 +462,45 @@ export default {
 	font-size: 1.3rem;
 	margin-bottom: 1rem;
 	color: #2d3748;
+}
+
+.product-rating-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #ffd700;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 999;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.product-rating-badge .icon {
+    margin-left: 4px;
+    color: #ffd700;
+}
+
+.product-rating-badge .review-count {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    margin-left: 3px;
+    color: #fff;
+}
+
+.product-stock {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.product-sold {
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 </style>

@@ -220,7 +220,7 @@
                             <ul class="list-unstyled">
                                 <li class="mb-2"><i class="envelope icon"></i> Email: support@mevnshop.vn</li>
                                 <li class="mb-2"><i class="phone icon"></i> Hotline: 0123.456.789</li>
-                                <li><i class="comment alternate icon"></i> <a href="#">Chat with support</a></li>
+                                <li><i class="comment alternate icon"></i><router-link :to="`/support`"> Chat with support</router-link></li>
                             </ul>
                         </div>
                     </div>
@@ -262,6 +262,7 @@
 import { mapGetters } from 'vuex';
 import api from '@/utils/api';
 import { formatCurrency, formatDate, getOrderStatusText, getPaymentMethodText, formatImageUrl } from '@/utils/helpers';
+import { RouterLink } from 'vue-router';
 
 export default {
     name: 'OrderDetail',

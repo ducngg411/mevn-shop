@@ -39,6 +39,16 @@
                                 <i class="clock outline icon"></i> Updated: {{ formatDate(product.updatedAt) }}
                             </span>
                         </div>
+
+                        <div class="product-meta mb-5">
+                            <span class="product-rating ml-3 mr-3">
+                                <i v-for="i in 5" :key="i" class="star icon" :class="{ 'text-warning': i <= averageRating }"></i>
+                                <span class="rating-count" v-if="reviews.length > 0">({{ reviews.length }} reviews)</span>
+                            </span>
+                            <span class="product-sold-count" v-if="product.sold">
+                                <i class="shopping bag icon"></i> {{ product.sold }} sold
+                            </span>
+                        </div>
                         
                         <div class="product-price mb-4">
                             <span v-if="product.discountPrice > 0" class="original-price">{{ formatCurrency(product.price) }}</span>
@@ -364,7 +374,24 @@ export default {
         buyNow() {
             this.addToCart();
             this.$router.push('/cart');
+        },
+        averageRating() {
+        try {
+            if (this.product.rating) {
+                return parseFloat(this.product.rating);
+            }
+            
+            if (this.reviews && this.reviews.length > 0) {
+                const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+                return Math.round((totalRating / this.reviews.length) * 10) / 10;
+            }
+            
+            return 0;
+        } catch (error) {
+            console.error('Error calculating rating:', error);
+            return 0;
         }
+}
     },
     created() {
         this.fetchProduct();
@@ -621,5 +648,6 @@ export default {
     background: #4361ee;
     border-radius: 2px;
 }
+
 
 </style>

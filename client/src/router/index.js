@@ -141,6 +141,12 @@ const routes = [
     path: '/change-password',
     name: 'ChangePassword',
     component: () => import('../views/auth/ChangePassword.vue')
+  },
+
+  {
+    path: '/support',
+    name: 'Support',
+    component: () => import('../views/Support.vue')
   }
 ]
 

@@ -121,7 +121,7 @@
 											<td>
 												<div class="d-flex align-items-center">
 													<img 
-														:src="product.image || 'https://picsum.photos/50/50'" 
+														:src="formatImageUrl(product.image)" 
 														:alt="product.title" 
 														class="product-thumbnail mr-2"
 													>
@@ -431,7 +431,7 @@
 import { mapGetters } from 'vuex';
 import AdminSidebar from '@/components/admin/AdminSidebar.vue';
 import api from '@/utils/api';
-import { formatCurrency, formatDate } from '@/utils/helpers';
+import { formatCurrency, formatDate, formatImageUrl } from '@/utils/helpers';
 
 export default {
 	name: 'ProductManagement',
@@ -508,6 +508,7 @@ export default {
 	methods: {
 		formatCurrency,
 		formatDate,
+		formatImageUrl,
 		async fetchProducts() {
 			try {
 				this.loading = true;

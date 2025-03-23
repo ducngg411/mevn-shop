@@ -3,7 +3,8 @@
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container">
 				<router-link class="navbar-brand" to="/">
-					{{ appTitle }}
+					<!-- {{ appTitle }} -->
+					<img src="/img/logo.png" alt="LisenceZone" class="site-logo">
 				</router-link>
 				
 				<button class="navbar-toggler" type="button" data-toggle="collapse" 
@@ -22,6 +23,9 @@
 						</li>
 						<li class="nav-item">
 							<router-link class="nav-link" to="/about">About</router-link>
+						</li>
+						<li class="nav-item">
+							<router-link class="nav-link" to="/support">Support</router-link>
 						</li>
 					</ul>
 					
@@ -118,63 +122,8 @@ export default {
 </script>
 
 <style scoped>
-/* header {
-	position: sticky;
-	top: 0;
-	z-index: 1030;
-}
 
-.cart-badge {
-	position: absolute;
-	top: 0;
-	right: 0;
-	font-size: 0.6rem;
-}
 
-.dropdown-menu.show {
-	display: block;
-	z-index: 1050;
-}
-
-.navbar-nav {
-	position: relative;
-}
-
-.navbar-dark .navbar-nav .nav-link {
-	color: rgba(255, 255, 255, 0.8);
-}
-
-.navbar-dark .navbar-nav .nav-link:hover,
-.navbar-dark .navbar-nav .nav-link:focus {
-	color: rgba(255, 255, 255, 1);
-}
-
-.dropdown-item {
-	padding: 0.5rem 1.5rem;
-}
-
-.dropdown-item i {
-	margin-right: 8px;
-}
-
-.nav-item.dropdown {
-	position: relative;
-}
-
-.dropdown-menu {
-	position: absolute;
-	right: 0;
-	left: auto;
-	top: 100%;
-	z-index: 1050;
-	min-width: 10rem;
-	margin-top: 0.125rem;
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
-	border: 1px solid rgba(0, 0, 0, 0.15);
-	background-color: #fff;
-} */
-
-/* AppHeader.vue */
 header {
 	position: sticky;
 	top: 0;
@@ -187,11 +136,11 @@ header {
 	padding: 12px 0;
 }
 
-.navbar-brand {
+/* .navbar-brand {
 	font-size: 1.5rem;
 	font-weight: 800;
 	letter-spacing: 1px;
-}
+} */
 
 .cart-badge {
 	position: absolute;
@@ -279,4 +228,16 @@ header {
 	color: #4361ee;
 }
 
+.site-logo {
+	position: relative;
+    height: 100px;
+    margin-top: -50px;
+    margin-bottom: -50px;
+    transition: transform 0.3s ease;
+	left: -30px;
+}
+
+.site-logo:hover {
+    transform: scale(1.05);
+}
 </style>

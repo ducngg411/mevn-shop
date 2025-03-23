@@ -80,7 +80,7 @@
 						<p><i class="map marker alternate icon"></i> Address: 123 ABC Street, XYZ District, HCMC</p>
 
 						<div class="mt-4">
-							<router-link to="/contact" class="btn btn-primary btn-lg">
+							<router-link to="/support" class="btn btn-primary btn-lg">
 								<i class="envelope icon"></i> Send us a message
 							</router-link>
 						</div>

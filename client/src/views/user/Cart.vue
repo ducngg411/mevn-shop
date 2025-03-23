@@ -7,8 +7,8 @@
                 <i class="huge shopping cart icon text-muted"></i>
                 <h3 class="mt-3">Your cart is empty</h3>
                 <p class="text-muted mb-4">You have not added any products to your cart</p>
-                <router-link to="/products" class="btn btn-primary">
-                    <i class="shopping bag icon"></i> Continue shopping
+                <router-link to="/products" class="btn btn-outline-primary">
+                    Continue shopping
                 </router-link>
             </div>
             
@@ -413,5 +413,62 @@ export default {
 .btn-outline-primary, .btn-outline-danger {
     font-weight: 600;
     border-radius: 6px;
+}
+
+.cart-actions .btn-outline-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-color: #4361ee;
+    color: #4361ee;
+    transition: all 0.3s;
+}
+
+.cart-actions .btn-outline-primary i {
+    margin-right: 6px;
+}
+
+.cart-actions .btn-outline-primary .arrow.left.icon {
+    font-size: 0.9rem;
+    margin-right: 6px;
+    position: relative;
+    top: -1px;
+}
+
+.cart-actions .btn-outline-primary:hover {
+    background-color: #4361ee;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+}
+
+.cart-actions .btn-outline-primary .arrow.left.icon {
+    font-size: 0.rem;
+    margin-right: 6px;
+    position: relative;
+    top: -1px;
+}
+
+.empty-cart .btn-outline-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-color: #4361ee;
+    color: #4361ee;
+    transition: all 0.3s;
+}
+
+.empty-cart .btn-outline-primary i {
+    font-size: 0.9rem;
+    margin-right: 6px;
+    position: relative;
+    top: -1px;
+}
+
+.empty-cart .btn-outline-primary:hover {
+    background-color: #4361ee;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
 }
 </style>

@@ -199,7 +199,7 @@
 									<div v-else>
 										<div v-for="product in lowStockProducts" :key="product._id" class="mb-3 pb-2 border-bottom">
 											<div class="d-flex align-items-center">
-												<img :src="product.image || 'https://picsum.photos/50/50'" :alt="product.title" class="mr-2" width="40" height="40" style="object-fit: cover;">
+												<img :src="formatImageUrl(product.image)" :alt="product.title" class="mr-2" width="40" height="40" style="object-fit: cover;">
 												<div>
 													<h6 class="mb-0">
 														<router-link :to="`/admin/products/${product._id}`" class="text-primary">
@@ -233,7 +233,7 @@
 import { mapGetters } from 'vuex';
 import AdminSidebar from '@/components/admin/AdminSidebar.vue';
 import api from '@/utils/api';
-import { formatCurrency, formatDate, getOrderStatusText } from '@/utils/helpers';
+import { formatCurrency, formatDate, formatImageUrl, getOrderStatusText } from '@/utils/helpers';
 
 export default {
 	name: 'AdminDashboard',
@@ -269,6 +269,7 @@ export default {
 		formatCurrency,
 		formatDate,
 		getOrderStatusText,
+		formatImageUrl,
 		getPaymentStatusText(status) {
 			const statusMap = {
 				'pending': 'Awaiting Payment',

@@ -6,6 +6,7 @@ const {
 	getAccountsByProduct,
 	updateAccount,
 	deleteAccount,
+	getAccounts
 } = require('../controllers/accountController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
@@ -17,6 +18,9 @@ router.route('/bulk').post(protect, admin, createBulkAccounts);
 
 // Get accounts by product
 router.route('/product/:id').get(protect, admin, getAccountsByProduct);
+
+// Get all accounts
+router.route('/').get(protect, admin, getAccounts);
 
 // Update and delete account
 router.route('/:id')

@@ -21,7 +21,7 @@
 				</li>
 				<li class="nav-item">
 					<router-link to="/admin/products" class="nav-link" :class="{ 'active': activeMenu === 'products' }">
-						<i class="store icon"></i>
+						<i class="shop icon"></i>
 						Store
 					</router-link>
 				</li>

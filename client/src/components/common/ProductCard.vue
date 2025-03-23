@@ -31,8 +31,8 @@
 				</span>
 				
 				<!-- Sold count -->
-				<span v-if="product.soldCount" class="product-sold">
-					{{ product.soldCount }} sold
+				<span v-if="product.sold" class="product-sold">
+					{{ product.sold }} sold
 				</span>
 			</div>
 			
@@ -279,9 +279,9 @@ export default {
 }
 
 .product-sold {
-	color: #6c757d;
-	font-size: 0.85rem;
-	font-weight: 600;
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
 .btn-outline-primary {

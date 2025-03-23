@@ -92,6 +92,26 @@ const createBulkAccounts = async (req, res) => {
 	}
 };
 
+// @desc    Get all accounts
+// @route   GET /api/accounts
+// @access  Private/Admin
+
+const getAccounts = async (req, res) => {
+	try {
+		const accounts = await Account.find({}).sort({ createdAt: -1 });
+
+		res.json({
+			success: true,
+			accounts,
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			message: error.message,
+		});
+	}
+}
+
 // @desc    Get all accounts for a product (admin)
 // @route   GET /api/accounts/product/:id
 // @access  Private/Admin
@@ -206,4 +226,5 @@ module.exports = {
 	getAccountsByProduct,
 	updateAccount,
 	deleteAccount,
+	getAccounts
 };

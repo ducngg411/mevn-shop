@@ -11,6 +11,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const voucherRoutes = require('./routes/voucherRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const supportRoutes = require('./routes/supportRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -26,6 +27,8 @@ app.use(cors());
 app.use('/api/payments/webhook', express.raw({type: 'application/json'}));
 
 app.use(express.json());
+
+app.use('/api/support', supportRoutes);
 
 // Create 'uploads' directory if it doesn't exist
 const fs = require('fs');
