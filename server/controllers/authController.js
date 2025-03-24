@@ -105,7 +105,6 @@ const resetPassword = async (req, res) => {
         
         console.log('Received reset request:', { email, token });
         
-        // Tìm user không cần điều kiện token và expiry trước
         const userExists = await User.findOne({ email });
         if (!userExists) {
             console.log('User not found with email:', email);
@@ -318,6 +317,7 @@ const changePassword = async (req, res) => {
     }
 };
 
+
 module.exports = {
     registerUser,
     loginUser,
@@ -325,5 +325,5 @@ module.exports = {
     updateUserProfile,
     forgotPassword,
     resetPassword,
-    changePassword
+    changePassword,
 };

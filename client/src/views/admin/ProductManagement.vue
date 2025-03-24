@@ -504,7 +504,6 @@ export default {
 		console.log(`Current page: ${this.currentPage}, showing items from ${start} to ${end-1}`);
 		return this.filteredProducts.slice(start, end);
 		},
-		},
 		isValidPrice() {
 			return this.productForm.price && this.productForm.price > 0;
 		},
@@ -533,7 +532,7 @@ export default {
 			
 			// Generate the array of pages
 			return [...Array(endPage - startPage + 1).keys()].map(x => x + startPage);
-
+		}
 	},
 	methods: {
 		formatCurrency,
@@ -543,8 +542,7 @@ export default {
 				try {
 			this.loading = true;
 			
-			// Nếu có 30 sản phẩm nhưng API chỉ trả về 10, bạn cần thay đổi limit
-			const response = await api.get('/products?limit=100'); // Tăng limit lên
+			const response = await api.get('/products?limit=100'); 
 			
 			if (response.data.success) {
 				console.log("Total products from API:", response.data.products.length);

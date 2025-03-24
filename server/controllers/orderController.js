@@ -304,11 +304,9 @@ const updateOrderStatus = async (req, res) => {
 			}
 		}
         
-        // Nếu trạng thái đơn hàng hoặc trạng thái thanh toán thay đổi thành completed, gửi email thông báo
         if ((status === 'completed' && oldStatus !== 'completed') || 
             (paymentStatus === 'completed' && oldPaymentStatus !== 'completed')) {
             try {
-                // Lấy thông tin đầy đủ của đơn hàng và user
                 const populatedOrder = await Order.findById(order._id)
                     .populate('user')
                     .populate('orderItems.product', 'title image price discountPrice')
@@ -316,12 +314,10 @@ const updateOrderStatus = async (req, res) => {
                 
                 const user = await User.findById(order.user);
                 
-                // Gửi email với thông tin tài khoản đã mua
                 await sendOrderConfirmationEmail(populatedOrder, user);
                 console.log(`Order confirmation email sent for order ${order._id} after status update`);
             } catch (emailError) {
                 console.error('Error sending order confirmation email after status update:', emailError);
-                // Không trả về lỗi cho admin vì việc cập nhật trạng thái vẫn thành công
             }
         }
 

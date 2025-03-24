@@ -120,12 +120,12 @@ const routes = [
     component: () => import('../views/admin/VoucherManagement.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
   },
-  // {
-  //   path: '/admin/users',
-  //   name: 'AdminUsers',
-  //   component: () => import('../views/admin/UserManagement.vue'),
-  //   meta: { requiresAuth: true, requiresAdmin: true }
-  // }
+  {
+    path: '/admin/users',
+    name: 'AdminUsers',
+    component: () => import('../views/admin/UserManagement.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
