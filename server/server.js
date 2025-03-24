@@ -13,6 +13,8 @@ const voucherRoutes = require('./routes/voucherRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const supportRoutes = require('./routes/supportRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const userRoutes = require('./routes/userRoutes');
+
 
 // Load environment variables
 dotenv.config();
@@ -32,6 +34,8 @@ app.use(express.json());
 app.use('/api/support', supportRoutes);
 
 app.use('/api/dashboard', dashboardRoutes);
+
+app.use('/api/users', userRoutes);
 
 // Create 'uploads' directory if it doesn't exist
 const fs = require('fs');

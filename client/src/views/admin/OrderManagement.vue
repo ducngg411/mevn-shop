@@ -325,7 +325,7 @@
 											<td>
 												<div class="d-flex align-items-center">
 													<img
-														:src="item.product.image || 'https://picsum.photos/50/50'"
+														:src="formatImageUrl(item.product.image) || 'https://picsum.photos/50/50'"
 														:alt="item.product.title"
 														class="order-item-image mr-2"
 													>
@@ -552,7 +552,7 @@
 import { mapGetters } from 'vuex';
 import AdminSidebar from '@/components/admin/AdminSidebar.vue';
 import api from '@/utils/api';
-import { formatCurrency, formatDate, getOrderStatusText, getPaymentMethodText } from '@/utils/helpers';
+import { formatCurrency, formatDate, formatImageUrl, getOrderStatusText, getPaymentMethodText } from '@/utils/helpers';
 
 export default {
 	name: 'OrderManagement',
@@ -626,6 +626,7 @@ export default {
 		formatDate,
 		getOrderStatusText,
 		getPaymentMethodText,
+		formatImageUrl,
 		getPaymentStatusText(status) {
 			const statusMap = {
 				'pending': 'Pending Payment',
