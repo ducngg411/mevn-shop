@@ -166,7 +166,7 @@ const getOrderById = async (req, res) => {
 		const order = await Order.findById(req.params.id)
 			.populate('user', 'username email fullName')
 			.populate('orderItems.product', 'title image price discountPrice');
-
+		
 		if (!order) {
 			return res.status(404).json({
 				success: false,

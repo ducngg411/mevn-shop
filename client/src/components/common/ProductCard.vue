@@ -73,19 +73,16 @@ export default {
 	computed: {
 		displayRating() {
 			try {
-				// Nếu product có trường rating trực tiếp
 				if (this.product.rating) {
 					return parseFloat(this.product.rating).toFixed(1);
 				}
 				
-				// Tính toán rating từ mảng reviews trong product (nếu có)
 				if (this.product.reviews && this.product.reviews.length > 0) {
 					const totalRating = this.product.reviews.reduce((sum, review) => sum + review.rating, 0);
 					const averageRating = totalRating / this.product.reviews.length;
 					return averageRating.toFixed(1);
 				}
 				
-				// Tính toán rating từ mảng reviews đã tải (nếu có)
 				if (this.reviews.length > 0) {
 					const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
 					const averageRating = totalRating / this.reviews.length;
@@ -99,11 +96,9 @@ export default {
 			}
 		},
 		reviewCount() {
-			// Ưu tiên reviews từ product nếu có
 			if (this.product.reviews) {
 				return this.product.reviews.length;
 			}
-			// Nếu không, sử dụng reviews đã tải
 			return this.reviews.length;
 		}
 	},

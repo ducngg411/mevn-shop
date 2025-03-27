@@ -324,11 +324,11 @@
 										<tr v-for="(item, index) in selectedOrder.orderItems" :key="index">
 											<td>
 												<div class="d-flex align-items-center">
-													<img
-														:src="formatImageUrl(item.product.image) || 'https://picsum.photos/50/50'"
+													<!-- <img
+														:src="formatImageUrl(item.product.image)"
 														:alt="item.product.title"
 														class="order-item-image mr-2"
-													>
+													> -->
 													<div>
 														<div class="font-weight-bold">{{ item.product.title }}</div>
 													</div>
