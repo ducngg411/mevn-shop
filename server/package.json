@@ -26,6 +26,7 @@
     "nodemailer": "^6.10.0",
     "stripe": "^17.7.0",
     "stripe-cli": "^0.1.0",
+    "uuid": "^11.1.0",
     "vee-validate": "^3.4.14",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.6.5"
