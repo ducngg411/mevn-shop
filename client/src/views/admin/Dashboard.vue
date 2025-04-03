@@ -202,7 +202,7 @@
 												<img :src="formatImageUrl(product.image)" :alt="product.title" class="mr-2" width="40" height="40" style="object-fit: cover;">
 												<div>
 													<h6 class="mb-0">
-														<router-link :to="`/admin/products/${product._id}`" class="text-primary">
+														<router-link :to="`/products/${product._id}`" class="text-primary">
 															{{ product.title }}
 														</router-link>
 													</h6>
