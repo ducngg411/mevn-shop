@@ -19,7 +19,7 @@
                                     <div class="contact-details">
                                         <h5 class="mb-1">Phone Support</h5>
                                         <p class="mb-0">
-                                            <a href="tel:0123456789" class="contact-link">0123.456.789</a>
+                                            <a href="tel:0377386704" class="contact-link">0377386704</a>
                                         </p>
                                         <p class="text-muted small">Available 24/7</p>
                                     </div>
@@ -34,7 +34,7 @@
                                     <div class="contact-details">
                                         <h5 class="mb-1">Facebook</h5>
                                         <p class="mb-0">
-                                            <a href="https://facebook.com/yourpage" target="_blank" rel="noopener noreferrer" class="contact-link">@yourpage</a>
+                                            <a href="https://facebook.com/ducngg.411" target="_blank" rel="noopener noreferrer" class="contact-link">@ducngg.411</a>
                                         </p>
                                         <p class="text-muted small">Message us on Facebook</p>
                                     </div>
@@ -49,7 +49,7 @@
                                     <div class="contact-details">
                                         <h5 class="mb-1">Zalo</h5>
                                         <p class="mb-0">
-                                            <a href="https://zalo.me/yourID" target="_blank" rel="noopener noreferrer" class="contact-link">0123.456.789</a>
+                                            <a href="https://zalo.me/0377386704" target="_blank" rel="noopener noreferrer" class="contact-link">0377386704</a>
                                         </p>
                                         <p class="text-muted small">Quick response during business hours</p>
                                     </div>
@@ -64,7 +64,7 @@
                                     <div class="contact-details">
                                         <h5 class="mb-1">Telegram</h5>
                                         <p class="mb-0">
-                                            <a href="https://t.me/yourusername" target="_blank" rel="noopener noreferrer" class="contact-link">@yourusername</a>
+                                            <a href="https://t.me/ducngg411" target="_blank" rel="noopener noreferrer" class="contact-link">@ducngg411</a>
                                         </p>
                                         <p class="text-muted small">Message us anytime</p>
                                     </div>

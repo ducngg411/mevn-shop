@@ -57,7 +57,7 @@ const supportRequestTemplate = (formData) => {
                     <p>Please respond to this customer as soon as possible.</p>
                 </div>
                 <div class="footer">
-                    <p>&copy; ${new Date().getFullYear()} MEVN Shop. All rights reserved.</p>
+                    <p>&copy; ${new Date().getFullYear()} License Zone@ All rights reserved.</p>
                 </div>
             </div>
         </body>

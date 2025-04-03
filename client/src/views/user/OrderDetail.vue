@@ -218,9 +218,9 @@
                             <p>If you need assistance or have questions about your order, please contact us:</p>
                             
                             <ul class="list-unstyled">
-                                <li class="mb-2"><i class="envelope icon"></i> Email: support@mevnshop.vn</li>
-                                <li class="mb-2"><i class="phone icon"></i> Hotline: 0123.456.789</li>
-                                <li><i class="comment alternate icon"></i><router-link :to="`/support`"> Chat with support</router-link></li>
+                                <li class="mb-2"><i class="envelope icon"></i> Email: ducntgch221177@fpt.edu.vn</li>
+                                <li class="mb-2"><i class="phone icon"></i> Hotline: 0377386704</li>
+                                <li><i class="comment alternate icon"></i><router-link :to="`/support`"> Contact with support</router-link></li>
                             </ul>
                         </div>
                     </div>

@@ -122,7 +122,6 @@ export default {
 		},
 		// Fetch reviews from API if needed
 		async fetchReviews() {
-			// Nếu product đã có reviews, không cần fetch
 			if (this.product.reviews) {
 				return;
 			}
@@ -141,7 +140,6 @@ export default {
 		}
 	},
 	mounted() {
-		// Fetch reviews nếu product không có sẵn trường reviews
 		if (!this.product.reviews) {
 			this.fetchReviews();
 		}

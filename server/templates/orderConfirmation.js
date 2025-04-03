@@ -177,11 +177,11 @@ const formatCurrency = (value) => {
                 
                 <p>If you have any questions or need assistance, please contact our support team.</p>
                 <p>Thank you for shopping with us!</p>
-                <p>Best regards,<br>The MEVN Shop Team</p>
+                <p>Best regards,<br>License Zone - Premium Store</p>
             </div>
             <div class="footer">
-                <p>&copy; ${new Date().getFullYear()} MEVN Shop. All rights reserved.</p>
-                <p>123 ABC Street, XYZ District, Ho Chi Minh City</p>
+                <p>&copy; ${new Date().getFullYear()} License Zone@ All rights reserved.</p>
+                <p>Greenwich VietNam, 2 Pham Van Bach, Cau Giay, Ha Noi</p>
             </div>
             </div>
         </body>

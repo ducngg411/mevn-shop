@@ -191,7 +191,6 @@ export default {
             try {
                 this.loading = true;
                 
-                // Xây dựng URL với các tham số
                 let url = `/products?pageNumber=${this.currentPage}&limit=${this.itemsPerPage}`;
                 
                 if (this.searchQuery) {
@@ -202,7 +201,6 @@ export default {
                     url += `&category=${this.selectedCategory}`;
                 }
                 
-                // Thêm tham số giá
                 if (this.priceRange !== 'all') {
                     const [min, max] = this.priceRange.split('-');
                     
@@ -214,7 +212,6 @@ export default {
                     }
                 }
                 
-                // Thêm tham số sắp xếp
                 if (this.sortBy) {
                     url += `&sortBy=${this.sortBy}`;
                 }

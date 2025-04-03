@@ -208,8 +208,8 @@ const deleteProduct = async (req, res) => {
         if (product) {
         // Check and delete associated accounts
         await Account.deleteMany({ product: product._id });
-        
-        await product.remove();
+        // Delete the product
+        await product.deleteOne();
         res.json({
             success: true,
             message: 'Product has been deleted',
@@ -253,6 +253,7 @@ const uploadProductImage = async (req, res) => {
         });
     }
 };
+
 
 module.exports = {
     getProducts,

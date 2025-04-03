@@ -5,9 +5,9 @@
 				<div class="col-md-4 mb-4 mb-md-0">
 					<h5 class="mb-3">{{ appTitle }}</h5>
 					<p>Online account buying and selling system with reputation</p>
-					<p><i class="map marker alternate icon"></i> 123 ABC Street, XYZ District, Ho Chi Minh City</p>
-					<p><i class="envelope icon"></i> info@mevnshop.vn</p>
-					<p><i class="phone icon"></i> 0123.456.789</p>
+					<p><i class="map marker alternate icon"></i> Greenwich VietNam, 2 Pham Van Bach, Cau Giay, Ha Noi</p>
+					<p><i class="envelope icon"></i> ducntgch221177@fpt.edu.vn</p>
+					<p><i class="phone icon"></i> 0377386704</p>
 				</div>
 				
 				<div class="col-md-4 mb-4 mb-md-0">

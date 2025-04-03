@@ -2,16 +2,16 @@
 	<div class="about">
 		<div class="container">
 			<div class="page-content">
-				<h1 class="text-center mb-5">About MEVN Shop</h1>
+				<h1 class="text-center mb-5">About License Zone - Premium Store</h1>
 
 				<div class="row">
 					<div class="col-md-6 mb-4">
-						<img src="https://picsum.photos/id/180/600/400" alt="About Us" class="img-fluid rounded">
+						<img src="img/logowbackground.png" alt="About Us" class="img-fluid rounded">
 					</div>
 					<div class="col-md-6">
 						<h2>Who are we?</h2>
-						<p>MEVN Shop is the leading online platform in Vietnam for buying and selling premium accounts for entertainment, learning, and online tools at the best prices in the market.</p>
-						<p>Founded in 2022, MEVN Shop has served over 10,000 customers and provided more than 50,000 accounts for popular online services such as Netflix, Spotify, Coursera, and many others.</p>
+						<p>Licens Zone is the leading online platform in Vietnam for buying and selling premium accounts for entertainment, learning, and online tools at the best prices in the market.</p>
+						<p>Founded in 2022, Licens Zone has served over 10,000 customers and provided more than 50,000 accounts for popular online services such as Netflix, Spotify, Coursera, and many others.</p>
 						<p>We pride ourselves on being a trusted partner to customers, providing high-quality accounts with dedicated support.</p>
 					</div>
 				</div>
@@ -19,7 +19,7 @@
 				<div class="row mt-5">
 					<div class="col-md-12">
 						<h2 class="text-center mb-4">Our Mission</h2>
-						<p class="text-center">MEVN Shop's mission is to provide customers with a secure, convenient, and cost-effective online account shopping experience. We are committed to providing high-quality service at reasonable prices, ensuring customer satisfaction in every transaction.</p>
+						<p class="text-center">Licens Zone's mission is to provide customers with a secure, convenient, and cost-effective online account shopping experience. We are committed to providing high-quality service at reasonable prices, ensuring customer satisfaction in every transaction.</p>
 					</div>
 				</div>
 
@@ -38,34 +38,16 @@
 							<div class="card-body text-center">
 								<i class="huge shield alternate icon text-primary mb-3"></i>
 								<h4 class="card-title">Safety & Security</h4>
-								<p class="card-text">All transactions on MEVN Shop are secure, and we are committed to protecting customers' personal information.</p>
+								<p class="card-text">All transactions on Licens Zone are secure, and we are committed to protecting customers' personal information.</p>
 							</div>
 						</div>
 					</div>
 					<div class="col-md-4 mb-4">
 						<div class="card h-100">
 							<div class="card-body text-center">
-								<i class="huge headset icon text-primary mb-3"></i>
+								<i class="huge headphones icon text-primary mb-3"></i>
 								<h4 class="card-title">24/7 Support</h4>
 								<p class="card-text">Our support team is always available to help you anytime, anywhere. We guarantee fast responses.</p>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="row mt-5">
-					<div class="col-md-12">
-						<h2 class="text-center mb-4">Our Team</h2>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-3 mb-4" v-for="(member, index) in teamMembers" :key="index">
-						<div class="card h-100 team-card">
-							<img :src="member.avatar" class="card-img-top team-avatar" :alt="member.name">
-							<div class="card-body text-center">
-								<h5 class="card-title">{{ member.name }}</h5>
-								<p class="card-text text-muted">{{ member.position }}</p>
 							</div>
 						</div>
 					</div>
@@ -75,9 +57,9 @@
 					<div class="col-md-12 text-center">
 						<h2 class="mb-4">Contact Us</h2>
 						<p>If you have any questions or requests, please contact us via:</p>
-						<p><i class="envelope icon"></i> Email: info@mevnshop.vn</p>
-						<p><i class="phone icon"></i> Hotline: 0123.456.789</p>
-						<p><i class="map marker alternate icon"></i> Address: 123 ABC Street, XYZ District, HCMC</p>
+						<p><i class="envelope icon"></i> Email: ducntgch221177@fpt.edu.vn</p>
+						<p><i class="phone icon"></i> Hotline: 0377836704</p>
+						<p><i class="map marker alternate icon"></i> Address: Greenwich VietNam, 2 Pham Van Bach, Cau Giay, Ha Noi</p>
 
 						<div class="mt-4">
 							<router-link to="/support" class="btn btn-primary btn-lg">

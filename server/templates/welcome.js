@@ -41,11 +41,11 @@ const welcomeTemplate = (userData) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>Welcome to MEVN Shop!</h1>
+                    <h1>Welcome to License Zone - Premium Store!</h1>
                 </div>
                 <div class="content">
                     <p>Hello ${userData.fullName || userData.username},</p>
-                    <p>Thank you for registering with MEVN Shop! We're excited to have you as a member of our community.</p>
+                    <p>Thank you for registering with License Zone - Premium Store! We're excited to have you as a member of our community.</p>
                     <p>With your account, you can:</p>
                     <ul>
                         <li>Browse and purchase premium accounts for various services</li>
@@ -56,11 +56,11 @@ const welcomeTemplate = (userData) => {
                     <p>To start shopping, click the button below:</p>
                     <a href="${process.env.FRONTEND_URL}/products" class="button">Start Shopping</a>
                     <p>If you have any questions or need assistance, feel free to contact our support team.</p>
-                    <p>Best regards,<br>The MEVN Shop Team</p>
+                    <p>Best regards,<br>License Zone - Premium Store</p>
                 </div>
                 <div class="footer">
-                    <p>&copy; ${new Date().getFullYear()} MEVN Shop. All rights reserved.</p>
-                    <p>123 ABC Street, XYZ District, Ho Chi Minh City</p>
+                    <p>&copy; ${new Date().getFullYear()} License Zone@ All rights reserved.</p>
+                    <p>Greenwich VietNam, 2 Pham Van Bach, Cau Giay, Ha Noi</p>
                 </div>
             </div>
         </body>

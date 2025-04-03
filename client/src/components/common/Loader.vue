@@ -14,7 +14,7 @@ export default {
 	props: {
 		message: {
 			type: String,
-			default: 'Loading...' // Dịch sang tiếng Anh
+			default: 'Loading...' 
 		},
 		overlay: {
 			type: Boolean,
