@@ -4,125 +4,137 @@ const Account = require('../models/Account');
 const Voucher = require('../models/Voucher');
 const User = require('../models/User');
 const { sendOrderConfirmationEmail } = require('../utils/emailService');
+const { applyVoucherToOrder } = require('./voucherController');
 
 // @desc    Create a new order
 // @route   POST /api/orders
 // @access  Private
 const createOrder = async (req, res) => {
-	try {
-		const { orderItems, paymentMethod = 'Credit Card', voucher } = req.body;
+    try {
+        const { orderItems, paymentMethod = 'Credit Card', voucher } = req.body;
 
-		if (!orderItems || orderItems.length === 0) {
-			return res.status(400).json({
-				success: false,
-				message: 'No products in the order',
-			});
-		}
+        if (!orderItems || orderItems.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No products in the order',
+            });
+        }
 
-		// Process each product in the order
-		let totalAmount = 0;
-		const processedItems = [];
+        // Process each product in the order
+        let totalAmount = 0;
+        const processedItems = [];
 
-		for (const item of orderItems) {
-			const product = await Product.findById(item.product);
+        for (const item of orderItems) {
+            const product = await Product.findById(item.product);
 
-			if (!product) {
-				return res.status(404).json({
-					success: false,
-					message: `Product not found with ID: ${item.product}`,
-				});
-			}
+            if (!product) {
+                return res.status(404).json({
+                    success: false,
+                    message: `Product not found with ID: ${item.product}`,
+                });
+            }
 
-			// Check if enough accounts are available
-			const availableAccounts = await Account.find({
-				product: product._id,
-				status: 'available',
-			}).limit(item.quantity);
+            // Check if enough accounts are available
+            const availableAccounts = await Account.find({
+                product: product._id,
+                status: 'available',
+            }).limit(item.quantity);
 
-			if (availableAccounts.length < item.quantity) {
-				return res.status(400).json({
-					success: false,
-					message: `Product "${product.title}" only has ${availableAccounts.length} available accounts, not enough for the requested quantity (${item.quantity})`,
-				});
-			}
+            if (availableAccounts.length < item.quantity) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Product "${product.title}" only has ${availableAccounts.length} available accounts, not enough for the requested quantity (${item.quantity})`,
+                });
+            }
 
-			// Use discounted price if available, otherwise use the original price
-			const price = product.discountPrice > 0 ? product.discountPrice : product.price;
+            // Use discounted price if available, otherwise use the original price
+            const price = product.discountPrice > 0 ? product.discountPrice : product.price;
 
-			const accountIds = availableAccounts.map(acc => acc._id);
+            const accountIds = availableAccounts.map(acc => acc._id);
 
-			processedItems.push({
-				product: product._id,
+            processedItems.push({
+                product: product._id,
                 productTitle: product.title,
-				quantity: item.quantity,
-				price,
-				accounts: accountIds,
-			});
+                quantity: item.quantity,
+                price,
+                accounts: accountIds,
+            });
 
-			totalAmount += price * item.quantity;
-		}
+            totalAmount += price * item.quantity;
+        }
 
-		// Apply voucher if provided
-		let discountAmount = 0;
-		let finalAmount = totalAmount;
-		let voucherData = null;
+        // Apply voucher if provided
+        let discountAmount = 0;
+        let finalAmount = totalAmount;
+        let voucherData = null;
 
-		if (voucher) {
-			voucherData = await Voucher.findOne({
-				code: voucher,
-				isActive: true,
-				startDate: { $lte: new Date() },
-				endDate: { $gte: new Date() },
-			});
+        if (voucher) {
+            voucherData = await Voucher.findOne({
+                code: voucher,
+                isActive: true,
+                startDate: { $lte: new Date() },
+                endDate: { $gte: new Date() },
+            });
 
-			if (voucherData) {
-				if (totalAmount >= voucherData.minOrderValue) {
-					if (voucherData.discountType === 'percentage') {
-						discountAmount = (totalAmount * voucherData.discountValue) / 100;
+            if (voucherData) {
+                // KIỂM TRA SỐ LẦN SỬ DỤNG TRƯỚC KHI ÁP DỤNG
+                if (
+                    voucherData.usageLimit !== null && 
+                    voucherData.timesUsed >= voucherData.usageLimit
+                ) {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'Voucher has reached its maximum number of uses',
+                    });
+                }
 
-						// Cap the discount amount if necessary
-						if (voucherData.maxDiscountAmount > 0 && discountAmount > voucherData.maxDiscountAmount) {
-							discountAmount = voucherData.maxDiscountAmount;
-						}
-					} else {
-						// Fixed discount
-						discountAmount = voucherData.discountValue;
-					}
+                if (totalAmount >= voucherData.minOrderValue) {
+                    if (voucherData.discountType === 'percentage') {
+                        discountAmount = (totalAmount * voucherData.discountValue) / 100;
 
-					finalAmount = totalAmount - discountAmount;
-				}
-			}
-		}
+                        // Giới hạn mức giảm giá nếu cần
+                        if (voucherData.maxDiscountAmount > 0 && discountAmount > voucherData.maxDiscountAmount) {
+                            discountAmount = voucherData.maxDiscountAmount;
+                        }
+                    } else {
+                        // Giảm giá cố định
+                        discountAmount = voucherData.discountValue;
+                    }
 
-		// Create the order
-		const order = await Order.create({
-			user: req.user._id,
-			orderItems: processedItems,
-			totalAmount,
-			voucher: voucherData ? voucherData._id : null,
-			discountAmount,
-			finalAmount,
-			paymentMethod,
+                    finalAmount = totalAmount - discountAmount;
+                }
+            }
+        }
+
+        // Create the order
+        const order = await Order.create({
+            user: req.user._id,
+            orderItems: processedItems,
+            totalAmount,
+            voucher: voucherData ? voucherData._id : null,
+            discountAmount,
+            finalAmount,
+            paymentMethod,
             createdAt: new Date(),
             status: 'pending',
             paymentStatus: 'pending',
-			paymentIntent: null, // save payment info from Stripe
-		});
+            paymentIntent: null, // save payment info from Stripe
+        });
 
-		// Update the status of the accounts
-		for (const item of processedItems) {
-			for (const accountId of item.accounts) {
-				await Account.findByIdAndUpdate(accountId, {
-					status: 'sold',
-					order: order._id,
-				});
-			}
+        // Update the status of the accounts
+        for (const item of processedItems) {
+            for (const accountId of item.accounts) {
+                await Account.findByIdAndUpdate(accountId, {
+                    status: 'sold',
+                    order: order._id,
+                });
+            }
 
-			// Update the sold quantity of the product
-			await Product.findByIdAndUpdate(item.product, {
-				$inc: { sold: item.quantity },
-			});
-		}
+            // Update the sold quantity of the product
+            await Product.findByIdAndUpdate(item.product, {
+                $inc: { sold: item.quantity },
+            });
+        }
 
         // Update stock for products
         for (const item of processedItems) {
@@ -131,32 +143,37 @@ const createOrder = async (req, res) => {
             });
         }
 
-        // Lấy thông tin đầy đủ của user và order để gửi email
+        // Increment voucher usage count
+        if (voucherData) {
+            await applyVoucherToOrder(voucherData, order);
+        }
+
+        // Get full order and user details for email
         const user = await User.findById(req.user._id);
         const populatedOrder = await Order.findById(order._id)
             .populate('orderItems.product', 'title image price discountPrice')
             .populate('orderItems.accounts', 'username password additionalInfo');
 
-        // Gửi email xác nhận đơn hàng
+        // Send order confirmation email
         try {
             await sendOrderConfirmationEmail(populatedOrder, user);
             console.log('Order confirmation email sent successfully');
         } catch (emailError) {
             console.error('Error sending order confirmation email:', emailError);
-            // Không trả về lỗi cho người dùng vì đơn hàng vẫn được tạo thành công
         }
 
-		res.status(201).json({
-			success: true,
-			order,
-		});
-	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		});
-	}
+        res.status(201).json({
+            success: true,
+            order,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
 };
+
 
 // @desc    Get order details by ID
 // @route   GET /api/orders/:id

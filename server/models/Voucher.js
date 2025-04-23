@@ -32,6 +32,14 @@ const voucherSchema = mongoose.Schema(
             type: Date,
             required: true
         },
+        usageLimit: {
+            type: Number,
+            required: null
+        },
+        timeUsed: {
+            type: Number,
+            default: 0
+        },
         isActive: {
             type: Boolean,
             default: true

@@ -14,6 +14,7 @@ const createVoucher = async (req, res) => {
             startDate,
             endDate,
             isActive,
+            usageLimit,
         } = req.body;
 
         // Check if code already exists
@@ -34,6 +35,8 @@ const createVoucher = async (req, res) => {
             startDate,
             endDate,
             isActive,
+            usageLimit,
+            timeUsed: 0
         });
 
         res.status(201).json({
@@ -114,6 +117,17 @@ const validateVoucher = async (req, res) => {
             });
         }
 
+        if (
+            voucher.usageLimit !== null && 
+            voucher.timesUsed >= voucher.usageLimit
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: 'Voucher has reached its maximum number of uses',
+            });
+        }
+
+
         if (totalAmount < voucher.minOrderValue) {
             return res.status(400).json({
                 success: false,
@@ -134,7 +148,10 @@ const validateVoucher = async (req, res) => {
 
         res.json({
             success: true,
-            voucher,
+            voucher: {
+                ...voucher.toObject(),
+                canBeUsed: voucher.usageLimit === null || voucher.timesUsed < voucher.usageLimit
+            },
             discountAmount,
             finalAmount: totalAmount - discountAmount,
         });
@@ -160,6 +177,7 @@ const updateVoucher = async (req, res) => {
             startDate,
             endDate,
             isActive,
+            usageLimit
         } = req.body;
 
         const voucher = await Voucher.findById(req.params.id);
@@ -190,6 +208,7 @@ const updateVoucher = async (req, res) => {
         voucher.startDate = startDate || voucher.startDate;
         voucher.endDate = endDate || voucher.endDate;
         voucher.isActive = isActive !== undefined ? isActive : voucher.isActive;
+        voucher.usageLimit = usageLimit !== undefined ? usageLimit : voucher.usageLimit;
 
         const updatedVoucher = await voucher.save();
 
@@ -202,6 +221,14 @@ const updateVoucher = async (req, res) => {
             success: false,
             message: error.message,
         });
+    }
+};
+
+const applyVoucherToOrder = async (voucher, order) => {
+    // Increment the timesUsed for the voucher
+    if (voucher) {
+        voucher.timesUsed += 1;
+        await voucher.save();
     }
 };
 
@@ -240,4 +267,5 @@ module.exports = {
     validateVoucher,
     updateVoucher,
     deleteVoucher,
+    applyVoucherToOrder
 };
