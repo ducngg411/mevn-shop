@@ -329,6 +329,7 @@ const redirectAfterPayment = async (req, res) => {
                 // Cập nhật trạng thái
                 order.status = 'completed';
                 order.paymentStatus = 'completed';
+                
                 await order.save();
                 
                 console.log(`Order ${orderId} status updated to completed in redirect handler`);

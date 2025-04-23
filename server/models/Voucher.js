@@ -36,7 +36,7 @@ const voucherSchema = mongoose.Schema(
             type: Number,
             required: null
         },
-        timeUsed: {
+        timesUsed: {
             type: Number,
             default: 0
         },

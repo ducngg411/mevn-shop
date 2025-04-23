@@ -36,7 +36,7 @@ const createVoucher = async (req, res) => {
             endDate,
             isActive,
             usageLimit,
-            timeUsed: 0
+            timesUsed: 0
         });
 
         res.status(201).json({
@@ -225,10 +225,18 @@ const updateVoucher = async (req, res) => {
 };
 
 const applyVoucherToOrder = async (voucher, order) => {
-    // Increment the timesUsed for the voucher
-    if (voucher) {
-        voucher.timesUsed += 1;
-        await voucher.save();
+    try {
+        if (!voucher || !voucher._id) return;
+        
+        const voucherDoc = await Voucher.findById(voucher._id);
+        
+        if (voucherDoc) {
+            voucherDoc.timesUsed = (voucherDoc.timesUsed || 0) + 1;
+            await voucherDoc.save();
+            console.log(`Voucher ${voucherDoc.code} timesUsed updated to: ${voucherDoc.timesUsed}`);
+        }
+    } catch (error) {
+        console.error('Error updating voucher usage count:', error);
     }
 };
 
